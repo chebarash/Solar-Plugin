@@ -1,0 +1,10 @@
+{
+  "name": "Solar Plugin",
+  "id": "1229731653276353355",
+  "api": "1.0.0",
+  "capabilities": [],
+  "enableProposedApi": false,
+  "editorType": ["figma"],
+  "main": "dist/code.js",
+  "ui": "dist/ui.html"
+}
