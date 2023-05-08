@@ -1,21 +1,17 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import Lottie from "react-lottie";
-import icon from "./lotties/ic_fine_tuning.json";
+import icFineTuning from "./lotties/ic_fine_tuning.json";
+import IconsConsumer from "../hooks/icons";
 
 const Search = ({
-  state: [_selected, setSelected],
-  menu: [_opened, setOpened],
-  number,
-  value,
-  onChange,
+  settings,
+  menu,
 }: {
-  value: string;
-  state: [boolean, Dispatch<SetStateAction<boolean>>];
-  menu: [boolean, Dispatch<SetStateAction<boolean>>];
-  number: number;
-  onChange: (value: string) => any;
+  settings: Dispatch<SetStateAction<boolean>>;
+  menu: () => any;
 }) => {
   const [stop, setStop] = useState<boolean>(false);
+  const { search, setSearch, category, message } = IconsConsumer();
   return (
     <div
       style={{
@@ -23,7 +19,6 @@ const Search = ({
         gridGap: 8,
         padding: `20px 20px 15px 20px`,
         height: 90,
-        zIndex: 9999,
       }}
     >
       <div
@@ -60,33 +55,27 @@ const Search = ({
           className="input"
           placeholder="Search"
           type="text"
-          value={value}
+          value={search}
           onChange={(e) => {
-            onChange(e.target.value);
+            setSearch(e.target.value);
+            message.search(e.target.value);
           }}
         />
         <button
-          className="settings"
+          className={`settings${category.length ? ` active` : ``}`}
           onClick={() => {
-            setSelected((s) => !s);
+            settings((s) => !s);
             setStop(true);
             setTimeout(() => setStop(false), 1);
+            message.category(category);
           }}
         >
-          <p
-            style={{
-              opacity: number,
-              transform: `scale(${!number ? 0 : 1})`,
-              marginRight: !number ? -28 : 0,
-            }}
-          >
-            {number}
-          </p>
+          <p>{category.length}</p>
           <Lottie
             options={{
               loop: false,
               autoplay: false,
-              animationData: icon,
+              animationData: icFineTuning,
             }}
             height={20}
             width={20}
@@ -94,7 +83,7 @@ const Search = ({
           />
         </button>
       </div>
-      <button className="button" onClick={() => setOpened(true)}>
+      <button className="small" onClick={menu}>
         <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
           <path
             d="M7 12C7 13.1046 6.10457 14 5 14C3.89543 14 3 13.1046 3 12C3 10.8954 3.89543 10 5 10C6.10457 10 7 10.8954 7 12Z"

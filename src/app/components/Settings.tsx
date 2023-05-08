@@ -1,75 +1,46 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React from "react";
+import IconsConsumer from "../hooks/icons";
 
-const toStr = (text: string) =>
-  text
-    .replace(/[-_]+/g, "")
-    .replace(/[^\w\s]/g, "")
-    .replace(
-      /\s+(.)(\w*)/g,
-      (_$1, $2, $3) => `${$2.toUpperCase() + $3.toLowerCase()}`
-    )
-    .replace(/\w/, (s) => s.toUpperCase())
-    .replace(/ /g, "")
-    .replace(/4K/g, `FourK`);
-
-const Settings = ({
-  categories: [categories, setCategories],
-}: {
-  categories: [
-    Array<{ name: string; selected: boolean; len: number; icon: any }>,
-    Dispatch<
-      SetStateAction<
-        Array<{ name: string; selected: boolean; len: number; icon: any }>
-      >
-    >
-  ];
-}) => {
+const Settings = () => {
+  const { categories, category, setCategory } = IconsConsumer();
   return (
     <div className="box">
-      <div className="head">
-        <h2>categories</h2>
-        <button
-          onClick={() =>
-            setCategories((c) =>
-              c.map(({ name, ...other }) => ({
-                ...other,
-                name,
-                selected: false,
-              }))
-            )
-          }
-        >
-          Clear all
-        </button>
-      </div>
+      <h2>categories</h2>
       <div>
-        {categories.map(({ name: n, selected, len, icon }) => (
-          <button
-            key={n}
-            className={`category${selected ? ` active` : ``}`}
-            onClick={() =>
-              setCategories((c) =>
-                c.map(({ name, selected, ...other }) => ({
-                  ...other,
-                  name,
-                  selected: name === n ? !selected : selected,
-                }))
-              )
+        {categories
+          .sort((a, b) => {
+            if (category.includes(a.name)) {
+              return -1;
             }
-          >
-            <div
-              style={{ width: 20, height: 20 }}
-              dangerouslySetInnerHTML={{
-                __html: require(`../../icons/${toStr(n)}/${toStr(icon)}/${
-                  selected ? `Bold` : `Linear`
-                }.svg`),
-              }}
-            ></div>
-            <p>{n}</p>
-            <div className="hint"></div>
-            <p className="len">{len}</p>
-          </button>
-        ))}
+            if (category.includes(b.name)) {
+              return 1;
+            }
+            return 0;
+          })
+          .map(({ name, icon, length }) => {
+            const active = category.includes(name);
+            return (
+              <button
+                key={name}
+                className={`category${active ? ` active` : ``}`}
+                onClick={() =>
+                  setCategory((c) =>
+                    active ? c.filter((c) => c !== name) : [...c, name]
+                  )
+                }
+              >
+                <div
+                  style={{ width: 20, height: 20 }}
+                  dangerouslySetInnerHTML={{
+                    __html: icon[active ? `Bold` : `Linear`],
+                  }}
+                ></div>
+                <p>{name}</p>
+                <div className="hint"></div>
+                <p className="len">{length}</p>
+              </button>
+            );
+          })}
       </div>
     </div>
   );

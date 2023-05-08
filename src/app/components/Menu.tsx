@@ -1,4 +1,4 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import React, { useState } from "react";
 import developer from "../assets/developer.jpg";
 import designer from "../assets/designer.jpg";
 
@@ -36,17 +36,13 @@ const De = ({
   </a>
 );
 
-const Menu = ({
-  menu: [_opened, setOpened],
-}: {
-  menu: [boolean, Dispatch<SetStateAction<boolean>>];
-}) => {
+const Menu = ({ close }: { close: () => any }) => {
   const [bug, setBug] = useState<string>(``);
   const [submitted, setSubmitted] = useState<boolean>(false);
   return (
     <div className="menu">
       <div className="header">
-        <button onClick={() => setOpened(false)}>
+        <button className="small" onClick={close}>
           <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
             <path
               fillRule="evenodd"
@@ -63,7 +59,12 @@ const Menu = ({
           e.preventDefault();
           setSubmitted(true);
           setBug(``);
-          console.log(bug);
+          parent.postMessage(
+            {
+              pluginMessage: { type: `report`, value: bug },
+            },
+            "*"
+          );
         }}
         className="bug"
       >
@@ -78,7 +79,7 @@ const Menu = ({
           placeholder="Describe Your problem"
         />
         <button
-          className={submitted ? `submitted` : ``}
+          className={`accent${submitted ? ` submitted` : ``}`}
           disabled={!bug || submitted}
           type="submit"
         >
