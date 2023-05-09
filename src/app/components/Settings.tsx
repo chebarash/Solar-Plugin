@@ -1,23 +1,29 @@
-import React from "react";
-import IconsConsumer from "../hooks/icons";
+import React, { useEffect, useState } from "react";
+import IconsConsumer, { CategoriesType } from "../hooks/icons";
 
 const Settings = () => {
   const { categories, category, setCategory } = IconsConsumer();
+  const [c, setC] = useState<CategoriesType>();
+
+  useEffect(() => {
+    setC(
+      categories.sort((a, b) => {
+        if (category.includes(a.name)) return -1;
+        if (category.includes(b.name)) return 1;
+        return 0;
+      })
+    );
+  }, []);
+
   return (
     <div className="box">
-      <h2>categories</h2>
+      <div className="head">
+        <h2>categories</h2>
+        <button onClick={() => setCategory([])}>Clear all</button>
+      </div>
       <div>
-        {categories
-          .sort((a, b) => {
-            if (category.includes(a.name)) {
-              return -1;
-            }
-            if (category.includes(b.name)) {
-              return 1;
-            }
-            return 0;
-          })
-          .map(({ name, icon, length }) => {
+        {!!c &&
+          c.map(({ name, icon, length }) => {
             const active = category.includes(name);
             return (
               <button

@@ -42,25 +42,25 @@ class Message {
   }
 }
 
-type Icon = {
+export type IconType = {
   [style: string]: string;
 };
 
-type Icons = {
+export type IconsType = {
   [category: string]: {
-    [name: string]: Icon;
+    [name: string]: IconType;
   };
 };
 
-type Categories = Array<{
+export type CategoriesType = Array<{
   name: string;
-  icon: Icon;
+  icon: IconType;
   length: number;
 }>;
 
-type Styles = Array<{ name: string; icon: any }>;
+export type StylesType = Array<{ name: string; icon: any }>;
 
-type Context = {
+export type ContextType = {
   prev: boolean;
   next: boolean;
   icons: Icons;
@@ -68,9 +68,9 @@ type Context = {
   style: string;
   category: Array<string>;
   setCategory: Dispatch<SetStateAction<Array<string>>>;
-  categories: Categories;
-  setCategories: Dispatch<SetStateAction<Categories>>;
-  styles: Styles;
+  categories: CategoriesType;
+  setCategories: Dispatch<SetStateAction<CategoriesType>>;
+  styles: StylesType;
   setStyle: Dispatch<SetStateAction<string>>;
   search: string;
   setSearch: Dispatch<SetStateAction<string>>;
@@ -81,7 +81,7 @@ type Context = {
   message: Message;
 };
 
-const defaults: Context = {
+const defaults: ContextType = {
   prev: false,
   next: true,
   icons: {},
@@ -109,7 +109,7 @@ const defaults: Context = {
   message: new Message(() => {}),
 };
 
-const IconsContext = createContext<Context>(defaults);
+const IconsContext = createContext<ContextType>(defaults);
 
 const useIcons = () => {
   const [prev, setPrev] = useState(defaults.prev);

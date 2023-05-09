@@ -46,19 +46,17 @@ const Icon = ({
         setHover(false);
       }}
     >
-      <svg className="tick" viewBox="0 0 24 24" fill="none">
-        <circle cx="12" cy="12" r="11" stroke="white" strokeWidth="2" />
-        <path
-          className="check"
-          d="M8.5 12L11 15L16 9"
+      <svg viewBox="0 0 24 24" fill="none">
+        <circle
+          cx="12"
+          cy="12"
+          r="11"
           stroke="white"
           strokeWidth="2"
-          strokeLinecap="round"
-          strokeLinejoin="round"
+          fill="var(--accent)"
         />
         <path
-          className="cross"
-          d="M9 15L15 9M15 15L9 9"
+          d="M8.5 12L11 15L16 9"
           stroke="white"
           strokeWidth="2"
           strokeLinecap="round"

@@ -17,8 +17,8 @@ const Search = ({
       style={{
         display: `flex`,
         gridGap: 8,
-        padding: `20px 20px 15px 20px`,
-        height: 90,
+        padding: `20px 20px 0 20px`,
+        height: 70,
       }}
     >
       <div

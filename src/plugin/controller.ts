@@ -17,7 +17,7 @@ let categories: Array<{
 let page: number = 0;
 let c: Array<string> = [];
 let search: string = ``;
-const lim = 200;
+const lim = 100;
 const toasts = [
   `🔥 Awesome`,
   `❤️ Thank You!`,
@@ -27,6 +27,7 @@ const toasts = [
   `🤘 You rock!`,
   `💖 You\`re breathtaking!`,
 ];
+const back = `https://solar-chebarashek.b4a.run/`;
 
 const toStr = (text: string) =>
   text.toLocaleLowerCase().replace(/[-_]+/g, "").replace(/ /g, "");
@@ -67,7 +68,7 @@ const getIcons = () => {
 };
 
 (async () => {
-  const response = await fetch("http://localhost:3000");
+  const response = await fetch(back);
   icons = (await response.json()) as Icons;
   categories = Object.keys(icons).map((name) => ({
     name,
@@ -102,7 +103,7 @@ figma.ui.onmessage = async ({
       figma.ui.postMessage(getIcons());
       break;
     case `report`:
-      await fetch(`http://localhost:3000/report?bug=${value}`);
+      await fetch(`${back}report?bug=${value}`);
       break;
     case `import`:
       const nodes = [];
@@ -110,6 +111,7 @@ figma.ui.onmessage = async ({
         const [style, category, name]: Array<string> = v.split(` / `);
         const icon = figma.createComponent();
         icon.resizeWithoutConstraints(24, 24);
+        icon.constrainProportions = true;
         icon.x = i * 30;
         icon.name = v;
         const node = figma.createNodeFromSvg(icons[category][name][style]);

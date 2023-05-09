@@ -12,6 +12,7 @@ const Scrollbar = ({
 }) => {
   return (
     <Scrollbars
+      className="scroll"
       ref={r}
       renderView={({ style, ...props }) => {
         return <div style={style} {...props} />;

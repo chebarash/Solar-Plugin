@@ -16,11 +16,15 @@ body {
 button {
   all: unset;
   cursor: pointer;
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 a,
 input,
-button {
+button,
+textarea {
   outline: none;
   text-decoration: none;
 }
@@ -69,6 +73,7 @@ button {
   --buttonHover: #394363;
   --buttonPressed: #1aaf32;
   --buttonDisabled: #e9eaee;
+  --buttonBack: #e3e6ec;
   --boosty: #f05f2d;
   --boostyBg: #fdeae4;
 }
@@ -131,6 +136,23 @@ button.small:hover {
 
 button.small:focus {
   border: 2px solid rgba(207, 212, 233, 0.7);
+}
+
+button.back {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+}
+
+button.back:hover {
+  background: var(--bg);
+}
+
+button.back:focus {
+  background: var(--buttonBack);
 }
 
 .icon {
@@ -226,7 +248,7 @@ button.small:focus {
   border: 1px solid var(--iconActiveBorder);
 }
 
-.tick {
+.icon > svg {
   opacity: 0;
   position: absolute;
   top: -3px;
@@ -235,49 +257,26 @@ button.small:focus {
   height: 20px;
 }
 
-.icon.selected .tick {
-  opacity: 1;
-}
-
-.icon.selected:hover .tick circle {
-  fill: var(--iconCross);
-}
-
-.tick circle {
-  fill: var(--accent);
-}
-
-.cross {
-  opacity: 0;
-}
-
-.icon.selected:hover .check {
-  opacity: 0;
-}
-
-.icon.selected:hover .cross {
+.icon.selected > svg {
   opacity: 1;
 }
 
 .app {
   flex: 1;
-  padding: 0 4px;
   display: grid;
   grid-template-rows: auto 1fr;
 }
 
 .menu {
   flex: 1;
-  padding: 0 4px;
-}
-
-.main {
   display: grid;
   grid-template-rows: auto 1fr;
 }
 
-.main.active {
-  grid-template-rows: auto 1fr 50px;
+.main {
+  margin-top: 15px;
+  display: grid;
+  grid-template-rows: auto 1fr;
 }
 
 .app,
@@ -296,6 +295,30 @@ button.small:focus {
   to {
     opacity: 1;
   }
+}
+
+.scroll::before,
+.scroll::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 15px;
+  z-index: 9999999;
+}
+
+.scroll::before {
+  top: 0;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, #ffffff 50.52%);
+}
+
+.scroll::after {
+  bottom: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    #ffffff 50.52%
+  );
 }
 
 .track * {
@@ -334,40 +357,27 @@ body[style="user-select: none;"] .thumb {
 
 .fade {
   z-index: 99;
+  height: 0px;
   overflow: hidden;
-  height: 30px;
-  margin-top: -30px;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0) 0%,
-    #ffffff 50.52%
-  );
-  padding: 10px 24px;
+  background: white;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  pointer-events: none;
-  grid-gap: 8px;
+  gap: 8px;
+  padding: 0 20px;
+}
+
+.fade.active {
+  height: 60px;
+  padding-bottom: 10px;
 }
 
 .fade * {
-  pointer-events: none;
-  transform: translate(0, 80px);
+  transform: translate(0, 30px);
 }
 
-.main.active .fade * {
-  pointer-events: all;
+.fade.active * {
   transform: translate(0, 0);
-}
-
-.main.active .fade {
-  height: 90px;
-  background: linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0) 0%,
-    #ffffff 21.88%
-  );
-  pointer-events: all;
 }
 
 .input {
@@ -404,7 +414,7 @@ body[style="user-select: none;"] .thumb {
   justify-content: center;
   padding: 10px;
   border-radius: 8px;
-  grid-gap: 9px;
+  gap: 9px;
 }
 
 .settings *:not(p) {
@@ -459,7 +469,6 @@ body[style="user-select: none;"] .thumb {
   margin: 0 20px 0 20px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
-  box-shadow: 0px 5px 5px 10px white;
 }
 
 .style {
@@ -607,11 +616,24 @@ body[style="user-select: none;"] .thumb {
   display: flex;
   align-items: flex-start;
   flex-direction: column;
-  grid-gap: 10px;
-  padding: 15px 20px 25px 20px;
+  gap: 10px;
+  padding: 15px 20px 20px 20px;
 }
 
-.box h2 {
+.box div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 7px;
+}
+
+.head {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+}
+
+.head h2 {
   text-transform: uppercase;
   font-style: normal;
   font-weight: 500;
@@ -620,37 +642,48 @@ body[style="user-select: none;"] .thumb {
   color: var(--accent);
 }
 
-.box div {
-  display: flex;
-  flex-wrap: wrap;
-  grid-gap: 7px;
+.head button {
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--settings);
+}
+
+.head button:hover {
+  color: var(--accent);
 }
 
 .header {
-  display: flex;
-  height: 90px;
-  padding: 20px;
-  grid-gap: 13px;
+  display: grid;
+  margin: 28px 15px 5px 15px;
+  grid-template-columns: 40px 1fr 40px;
+  grid-gap: 10px;
 }
 
 .header h2 {
   font-style: normal;
   font-weight: 500;
   font-size: 20px;
-  line-height: 25px;
   color: var(--accent);
   margin: auto 0;
 }
 
-.bug,
-.other {
-  padding: 0 24px 20px 24px;
+.me {
+  padding: 15px 20px 20px 20px;
   display: flex;
   flex-direction: column;
-  grid-gap: 10px;
+  gap: 20px;
+}
+
+.bug,
+.credits,
+.other {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .bug h3,
+.credits h3,
 .other h3 {
   text-transform: uppercase;
   font-weight: 500;
@@ -659,29 +692,31 @@ body[style="user-select: none;"] .thumb {
   color: var(--accent);
 }
 
-.bug input {
-  flex: 1;
+.bug textarea {
+  width: 100%;
   height: 50px;
   background: var(--inputBg);
   border-radius: 10px;
   font-weight: 500;
   font-size: 14px;
-  line-height: 18px;
   color: var(--inputColor);
   padding: 16px 20px;
   border: 2px solid var(--input);
+  overflow: hidden;
+  resize: none;
+  transition: height 0s linear !important;
 }
 
-.bug input::placeholder {
+.bug textarea::placeholder {
   color: var(--fg);
   font-weight: 400;
 }
 
-.bug input:hover {
+.bug textarea:hover {
   border: 2px solid var(--inputHover);
 }
 
-.bug input:focus {
+.bug textarea:focus {
   border: 2px solid var(--inputBorder);
 }
 
@@ -690,17 +725,18 @@ body[style="user-select: none;"] .thumb {
   color: var(--buttonFg) !important;
 }
 
-.other > div {
+.credits > div {
   display: flex;
   flex-direction: column;
-  grid-gap: 4px;
+  gap: 4px;
   margin-bottom: 10px;
 }
 
 .de {
   display: flex;
-  margin: 4px 0;
   justify-content: space-between;
+  border-radius: 10px;
+  padding: 10px 0;
 }
 
 .de img {
@@ -712,13 +748,13 @@ body[style="user-select: none;"] .thumb {
 .de > div {
   display: flex;
   align-items: center;
-  grid-gap: 4px;
+  gap: 4px;
 }
 
 .de > div > div {
   display: flex;
   flex-direction: column;
-  grid-gap: 3px;
+  gap: 3px;
   margin-left: 11px;
 }
 
@@ -740,6 +776,12 @@ body[style="user-select: none;"] .thumb {
   font-weight: 500;
 }
 
+.de:hover,
+.de:focus {
+  padding: 10px;
+  background: var(--bg);
+}
+
 .de:hover > div > p,
 .de:focus > div > p {
   color: var(--accent);
@@ -750,7 +792,7 @@ body[style="user-select: none;"] .thumb {
   stroke: var(--accent);
 }
 
-.other .boosty {
+.credits .boosty {
   text-decoration: none;
   width: 100%;
   height: 50px;
@@ -763,19 +805,88 @@ body[style="user-select: none;"] .thumb {
   justify-content: center;
   background: var(--boostyBg);
   color: var(--boosty);
-  grid-gap: 13px;
+  gap: 13px;
 }
 
-.other .boosty:hover path,
-.other .boosty:focus path {
+.credits .boosty:hover path,
+.credits .boosty:focus path {
   fill: var(--buttonFg);
 }
 
-.other .boosty:hover,
-.other .boosty:focus {
+.credits .boosty:hover,
+.credits .boosty:focus {
   background: var(--boosty);
   color: var(--buttonFg);
-  grid-gap: 13px;
+}
+
+.other > div {
+  display: grid;
+  grid-gap: 10px;
+  grid-template-columns: 1fr 1fr;
+}
+
+.oth {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+  padding: 12px;
+  background: var(--bg);
+  border-radius: 10px;
+}
+
+.oth span {
+  width: 35px;
+  height: 35px;
+  padding: 7px;
+  border-radius: 100%;
+  background: var(--fg);
+}
+
+.oth:hover span,
+.oth:focus span {
+  background: var(--accent);
+}
+
+.oth div {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+}
+
+.oth p {
+  font-style: normal;
+  font-weight: 500;
+  font-size: 12px;
+  color: var(--fg);
+}
+
+.oth:hover p,
+.oth:focus p {
+  color: var(--accent);
+}
+
+.oth:hover div path,
+.oth:focus div path {
+  stroke: var(--accent);
+}
+
+.oth:hover div {
+  animation-duration: 300ms;
+  animation-name: g;
+}
+
+@keyframes g {
+  0% {
+    gap: 3px;
+  }
+
+  50% {
+    gap: 7px;
+  }
+
+  100% {
+    gap: 3px;
+  }
 }
 
 .searchErr {
@@ -784,7 +895,7 @@ body[style="user-select: none;"] .thumb {
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  grid-gap: 20px;
+  gap: 20px;
   width: min-content;
   margin: auto;
 }
@@ -800,7 +911,7 @@ body[style="user-select: none;"] .thumb {
 .skeleton {
   height: 100%;
   overflow: hidden;
-  padding: 15px 20px 25px 20px;
+  padding: 15px 20px 20px 20px;
   display: grid;
   grid-gap: 8px;
   grid-template-columns: repeat(auto-fill, minmax(min(62px, 100%), 1fr));

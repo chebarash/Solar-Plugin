@@ -1,8 +1,7 @@
 import React, { useState } from "react";
 import Scrollbar from "./Scrollbar";
 import Icon from "./Icon";
-import IconsConsumer from "../hooks/icons";
-import Loader from "./Loader";
+import IconsConsumer, { IconsType } from "../hooks/icons";
 import Banner from "./Banner";
 
 const Icons = ({
@@ -10,13 +9,7 @@ const Icons = ({
   buttons = false,
   add = false,
 }: {
-  i?: {
-    [category: string]: {
-      [name: string]: {
-        [style: string]: string;
-      };
-    };
-  };
+  i?: IconsType;
   buttons?: boolean;
   add?: boolean;
 }) => {
@@ -25,7 +18,6 @@ const Icons = ({
     style,
     selected,
     setSelected,
-    loading,
     banner,
     setBanner,
     prev,
@@ -55,51 +47,28 @@ const Icons = ({
         }));
       }}
     >
-      {loading ? (
-        <Loader />
-      ) : (
-        <div
-          style={{
-            padding: `15px 20px 25px 20px`,
-            display: `grid`,
-            gridGap: 8,
-            gridTemplateColumns: `repeat(auto-fill, minmax(min(62px, 100%), 1fr))`,
-          }}
-        >
-          {banner && add && <Banner hide={() => setBanner(false)} />}
-          {prev && buttons && (
-            <button className="accent" onClick={() => message.prev()}>
-              prev
-            </button>
-          )}
-          {Object.keys(data).map((category) =>
-            Object.entries(data[category]).map(([name, val]) => {
-              if (i) {
-                return Object.entries(val)
-                  .filter(([style]) =>
-                    selected.includes(`${style} / ${category} / ${name}`)
-                  )
-                  .map(([style, icon]) => {
-                    const str = `${style} / ${category} / ${name}`;
-                    return (
-                      <Icon
-                        key={str}
-                        name={name}
-                        size={viewSize}
-                        selected={true}
-                        select={() =>
-                          setSelected((s) => s.filter((s) => s !== str))
-                        }
-                        icon={icon}
-                      />
-                    );
-                  });
-              }
+      <div
+        style={{
+          padding: `15px 20px 20px 20px`,
+          display: `grid`,
+          gridGap: 8,
+          gridTemplateColumns: `repeat(auto-fill, minmax(min(62px, 100%), 1fr))`,
+        }}
+      >
+        {banner && add && <Banner hide={() => setBanner(false)} />}
+        {prev && buttons && (
+          <button className="accent" onClick={() => message.prev()}>
+            prev
+          </button>
+        )}
+        {Object.keys(data).map((category) =>
+          Object.entries(data[category]).map(([name, val]) => {
+            const ico = (icon: string, style: string) => {
               const str = `${style} / ${category} / ${name}`;
               const active = selected.includes(str);
               return (
                 <Icon
-                  key={`${category}-${name}`}
+                  key={str}
                   name={name}
                   size={viewSize}
                   selected={active}
@@ -108,18 +77,23 @@ const Icons = ({
                       active ? s.filter((s) => s !== str) : [...s, str]
                     )
                   }
-                  icon={data[category][name][style]}
+                  icon={icon}
                 />
               );
-            })
-          )}
-          {next && buttons && (
-            <button className="accent" onClick={() => message.next()}>
-              next
-            </button>
-          )}
-        </div>
-      )}
+            };
+            if (i)
+              return Object.entries(val).map(([style, icon]) =>
+                ico(icon, style)
+              );
+            return ico(data[category][name][style], style);
+          })
+        )}
+        {next && buttons && (
+          <button className="accent" onClick={() => message.next()}>
+            next
+          </button>
+        )}
+      </div>
     </Scrollbar>
   );
 };
