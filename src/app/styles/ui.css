@@ -249,16 +249,17 @@ button.back:focus {
 }
 
 .icon > svg {
-  opacity: 0;
+  scale: 0;
   position: absolute;
   top: -3px;
   right: -3px;
   width: 20px;
   height: 20px;
+  transition: scale 100ms ease-in !important;
 }
 
 .icon.selected > svg {
-  opacity: 1;
+  scale: 1;
 }
 
 .app {
@@ -417,25 +418,31 @@ body[style="user-select: none;"] .thumb {
   gap: 9px;
 }
 
-.settings *:not(p) {
-  transition: none !important;
-}
-
-.settings *[fill="rgb(112,120,137)"] {
-  fill: var(--fg);
-}
-.settings *[stroke="rgb(112,120,137)"] {
-  stroke: var(--fg);
-}
-
-.settings:hover *[fill="rgb(112,120,137)"],
-.settings:focus *[fill="rgb(112,120,137)"] {
+.settings:hover *[fill="var(--fg)"],
+.settings:focus *[fill="var(--fg)"] {
   fill: var(--accent);
 }
 
-.settings:hover *[stroke="rgb(112,120,137)"],
-.settings:focus *[stroke="rgb(112,120,137)"] {
-  stroke: var(--accent);
+.settings .clicked circle[cx="8"] {
+  animation-duration: 300ms;
+  animation-name: c1;
+}
+
+.settings .clicked circle[cx="12"] {
+  animation-duration: 300ms;
+  animation-name: c2;
+}
+
+@keyframes c1 {
+  50% {
+    transform: translateX(4px);
+  }
+}
+
+@keyframes c2 {
+  50% {
+    transform: translateX(-4px);
+  }
 }
 
 .settings.active p {
@@ -473,8 +480,11 @@ body[style="user-select: none;"] .thumb {
 
 .style {
   border-radius: 7px;
-  padding: 7px;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
 }
 
 .style.active {
@@ -512,24 +522,33 @@ body[style="user-select: none;"] .thumb {
   background: rgba(3, 32, 131, 0.05);
 }
 
-.style svg * {
-  transition: none !important;
-}
-
-.style *[fill="rgb(97,104,130)"] {
-  fill: var(--fg);
-}
-
-.style *[stroke="rgb(97,104,130)"] {
-  stroke: var(--fg);
-}
-
-.style.active *[fill="rgb(97,104,130)"] {
+.style.active *[fill="var(--fg)"],
+.style.active *[fill="transparent"] {
   fill: var(--accent);
 }
 
-.style.active *[stroke="rgb(97,104,130)"] {
+.style.active *[stroke="var(--fg)"] {
   stroke: var(--accent);
+}
+
+.style.active svg {
+  animation-duration: 300ms;
+  animation-name: r;
+}
+
+@keyframes r {
+  0% {
+    scale: 1;
+  }
+
+  50% {
+    scale: 0.5;
+  }
+
+  100% {
+    scale: 1;
+    rotate: 360deg;
+  }
 }
 
 .category {

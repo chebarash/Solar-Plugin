@@ -1,6 +1,4 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
-import Lottie from "react-lottie";
-import icFineTuning from "./lotties/ic_fine_tuning.json";
 import IconsConsumer from "../hooks/icons";
 
 const Search = ({
@@ -10,8 +8,8 @@ const Search = ({
   settings: Dispatch<SetStateAction<boolean>>;
   menu: () => any;
 }) => {
-  const [stop, setStop] = useState<boolean>(false);
   const { search, setSearch, category, message } = IconsConsumer();
+  const [click, setClick] = useState<boolean>(false);
   return (
     <div
       style={{
@@ -64,23 +62,52 @@ const Search = ({
         <button
           className={`settings${category.length ? ` active` : ``}`}
           onClick={() => {
+            setClick(true);
+            setTimeout(() => setClick(false), 300);
             settings((s) => !s);
-            setStop(true);
-            setTimeout(() => setStop(false), 1);
             message.category(category);
           }}
         >
           <p>{category.length}</p>
-          <Lottie
-            options={{
-              loop: false,
-              autoplay: false,
-              animationData: icFineTuning,
-            }}
-            height={20}
-            width={20}
-            isStopped={stop}
-          />
+          <svg
+            className={click && `clicked`}
+            width="20"
+            height="20"
+            viewBox="0 0 20 20"
+          >
+            <rect
+              x="1"
+              y="5.3"
+              width="18"
+              height="1.4"
+              rx="0.7"
+              fill="var(--fg)"
+            />
+            <rect
+              x="1"
+              y="13.3"
+              width="18"
+              height="1.4"
+              rx="0.7"
+              fill="var(--fg)"
+            />
+            <circle
+              cx="12"
+              cy="6"
+              r="3"
+              fill="var(--fg)"
+              stroke="white"
+              stroke-width="2"
+            />
+            <circle
+              cx="8"
+              cy="14"
+              r="3"
+              fill="var(--fg)"
+              stroke="white"
+              stroke-width="2"
+            />
+          </svg>
         </button>
       </div>
       <button className="small" onClick={menu}>

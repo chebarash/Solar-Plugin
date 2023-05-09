@@ -1,5 +1,4 @@
 import React from "react";
-import Lottie from "react-lottie";
 import IconsConsumer from "../hooks/icons";
 
 const Styles = () => {
@@ -15,16 +14,9 @@ const Styles = () => {
           }`}
           onClick={() => setStyle(name)}
         >
-          <Lottie
-            options={{
-              loop: false,
-              autoplay: false,
-              animationData: icon,
-            }}
-            height={20}
-            width={20}
-            isStopped={style !== name}
-          />
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+            {icon}
+          </svg>
         </button>
       ))}
     </div>

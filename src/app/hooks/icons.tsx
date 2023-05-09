@@ -7,13 +7,6 @@ import React, {
   SetStateAction,
 } from "react";
 
-import icLinear from "../components/lotties/ic_linear.json";
-import icLineDuotone from "../components/lotties/ic_line_duotone.json";
-import icBold from "../components/lotties/ic_bold.json";
-import icBoldDuotone from "../components/lotties/ic_bold_duotone.json";
-import icBroken from "../components/lotties/ic_broken.json";
-import icOutline from "../components/lotties/ic_outline.json";
-
 class Message {
   constructor(private setLoading: Dispatch<SetStateAction<boolean>>) {}
   private msg(type: string, value: string | Array<string>) {
@@ -93,12 +86,79 @@ const defaults: ContextType = {
   setCategories: () => {},
   setStyle: () => {},
   styles: [
-    { name: `Linear`, icon: icLinear },
-    { name: `Line Duotone`, icon: icLineDuotone },
-    { name: `Bold`, icon: icBold },
-    { name: `Bold Duotone`, icon: icBoldDuotone },
-    { name: `Broken`, icon: icBroken },
-    { name: `Outline`, icon: icOutline },
+    {
+      name: `Linear`,
+      icon: (
+        <path
+          d="M5.75736 5.75736C3.41421 8.1005 3.41421 11.8995 5.75736 14.2426C8.1005 16.5858 11.8999 16.5858 14.2431 14.2426C16.5862 11.8995 16.5858 8.10051 14.2426 5.75736C11.8995 3.41421 8.1005 3.41421 5.75736 5.75736Z"
+          stroke="var(--fg)"
+        />
+      ),
+    },
+    {
+      name: `Line Duotone`,
+      icon: (
+        <>
+          <path
+            d="M5.75736 5.75736C3.41421 8.1005 3.41421 11.8995 5.75736 14.2426L14.2426 5.75736C11.8995 3.41421 8.10051 3.41421 5.75736 5.75736Z"
+            stroke="var(--fg)"
+          />
+          <path
+            opacity="0.5"
+            d="M5.75732 14.2426C8.10047 16.5858 11.8995 16.5858 14.2426 14.2426C16.5858 11.8995 16.5858 8.10047 14.2426 5.75732"
+            stroke="var(--fg)"
+          />
+        </>
+      ),
+    },
+    {
+      name: `Bold`,
+      icon: (
+        <path
+          d="M5.75736 14.2426C3.41421 11.8995 3.41421 8.1005 5.75736 5.75736C8.1005 3.41421 11.8995 3.41421 14.2426 5.75736C16.5858 8.10051 16.5862 11.8995 14.2431 14.2426C11.8999 16.5858 8.1005 16.5858 5.75736 14.2426Z"
+          fill="var(--fg)"
+        />
+      ),
+    },
+    {
+      name: `Bold Duotone`,
+      icon: (
+        <>
+          <path
+            d="M5.75736 5.75736C3.41421 8.1005 3.41421 11.8995 5.75736 14.2426L14.2426 5.75736C11.8995 3.41421 8.1005 3.41421 5.75736 5.75736Z"
+            fill="var(--fg)"
+          />
+          <path
+            opacity="0.5"
+            d="M14.2426 14.2426C11.8995 16.5858 8.10047 16.5858 5.75732 14.2426L14.2426 5.75732C16.5858 8.10047 16.5858 11.8995 14.2426 14.2426Z"
+            fill="var(--fg)"
+          />
+        </>
+      ),
+    },
+    {
+      name: `Broken`,
+      icon: (
+        <path
+          d="M5.75736 5.75736C3.41421 8.1005 3.41421 11.8995 5.75736 14.2426C8.1005 16.5858 11.8999 16.5858 14.2431 14.2426C16.5862 11.8995 16.5858 8.10051 14.2426 5.75736C11.8995 3.41421 8.1005 3.41421 5.75736 5.75736Z"
+          stroke="var(--fg)"
+          strokeLinecap="round"
+          strokeDasharray="2 2"
+        />
+      ),
+    },
+    {
+      name: `Outline`,
+      icon: (
+        <path
+          fillRule="evenodd"
+          clipRule="evenodd"
+          d="M10 16C6.68629 16 4 13.3137 4 10C4 6.68629 6.68629 4 10 4C13.3137 4 16.0003 6.68595 16.0003 9.99965C16.0003 13.3134 13.3137 16 10 16ZM6.99999 10C7.00001 11.6569 8.34315 13 9.99999 13C11.6568 13 13.0001 11.6567 13.0001 9.9999C13.0001 8.34306 11.6568 7.00009 9.99993 7.00007C8.34309 7.00005 6.99997 8.34317 6.99999 10Z"
+          fill="transparent"
+          stroke="var(--fg)"
+        />
+      ),
+    },
   ],
   search: ``,
   setSearch: () => {},
