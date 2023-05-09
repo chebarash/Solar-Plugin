@@ -531,7 +531,7 @@ body[style="user-select: none;"] .thumb {
   stroke: var(--accent);
 }
 
-.style.active svg {
+.style svg.clicked {
   animation-duration: 300ms;
   animation-name: r;
 }
