@@ -6,5 +6,12 @@
   "enableProposedApi": false,
   "editorType": ["figma"],
   "main": "dist/code.js",
-  "ui": "dist/ui.html"
+  "ui": "dist/ui.html",
+  "networkAccess": {
+    "allowedDomains": [
+      "solar-chebarashek.b4a.run",
+      "fonts.googleapis.com",
+      "fonts.gstatic.com"
+    ]
+  }
 }

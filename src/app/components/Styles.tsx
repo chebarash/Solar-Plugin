@@ -7,7 +7,7 @@ const Styles = () => {
   return (
     <div className={`styleBox`}>
       {styles.map(({ name, icon }) => (
-        <Style name={name} icon={icon} />
+        <Style name={name} icon={icon} key={name} />
       ))}
     </div>
   );

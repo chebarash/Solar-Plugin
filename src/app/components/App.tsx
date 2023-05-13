@@ -6,7 +6,6 @@ import Main from "./Main";
 import Menu from "./Menu";
 import Search from "./Search";
 import Settings from "./Settings";
-import Scrollbar from "./Scrollbar";
 import Selected from "./Selected";
 
 function App() {
@@ -18,13 +17,7 @@ function App() {
       return (
         <div className="app">
           <Search settings={setSettings} menu={() => setPage(`menu`)} />
-          {settings ? (
-            <Scrollbar>
-              <Settings />
-            </Scrollbar>
-          ) : (
-            <Main menu={() => setPage(`selected`)} />
-          )}
+          {settings ? <Settings /> : <Main menu={() => setPage(`selected`)} />}
         </div>
       );
     case `menu`:

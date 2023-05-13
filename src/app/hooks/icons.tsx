@@ -33,6 +33,9 @@ class Message {
   import(selected: Array<string>) {
     this.msg(`import`, selected);
   }
+  error() {
+    this.msg(`error`, []);
+  }
 }
 
 export type IconType = {
@@ -56,7 +59,7 @@ export type StylesType = Array<{ name: string; icon: any }>;
 export type ContextType = {
   prev: boolean;
   next: boolean;
-  icons: Icons;
+  icons: IconsType;
   loading: boolean;
   style: string;
   category: Array<string>;
@@ -72,6 +75,7 @@ export type ContextType = {
   banner: boolean;
   setBanner: Dispatch<SetStateAction<boolean>>;
   message: Message;
+  error?: string;
 };
 
 const defaults: ContextType = {
@@ -182,9 +186,13 @@ const useIcons = () => {
   const [banner, setBanner] = useState<boolean>(defaults.banner);
   const [search, setSearch] = useState<string>(defaults.search);
   const [selected, setSelected] = useState<Array<string>>(defaults.selected);
+  const [error, setError] = useState<string>(defaults.error);
 
   useEffect(() => {
     window.onmessage = (event) => {
+      setLoading(false);
+      const err = event.data.pluginMessage.error;
+      if (err) return setError(err);
       if (
         search.toLocaleLowerCase().replace(/[-_]+/g, "").replace(/ /g, "") !=
         event.data.pluginMessage.search
@@ -193,9 +201,9 @@ const useIcons = () => {
       const { icons, categories, prev, next } = event.data.pluginMessage;
       setIcons(icons);
       setCategories(categories);
-      setLoading(false);
       setPrev(prev);
       setNext(next);
+      setError(undefined);
     };
   }, [search]);
 
@@ -218,6 +226,7 @@ const useIcons = () => {
     banner,
     setBanner,
     message: new Message(setLoading),
+    error,
   };
 };
 

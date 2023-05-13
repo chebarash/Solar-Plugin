@@ -889,7 +889,8 @@ body[style="user-select: none;"] .thumb {
   stroke: var(--accent);
 }
 
-.oth:hover div {
+.oth:hover div,
+.oth:focus div {
   animation-duration: 300ms;
   animation-name: g;
 }
@@ -925,6 +926,42 @@ body[style="user-select: none;"] .thumb {
   text-align: center;
   color: var(--accent);
   width: max-content;
+  max-width: 100vw;
+}
+
+.searchErr div,
+.searchErr img {
+  width: 180px;
+  height: 180px;
+  display: flex;
+  position: relative;
+}
+
+.searchErr div::after {
+  content: "";
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  border-radius: 100%;
+  border: solid transparent 2px;
+  z-index: -1;
+}
+
+.searchErr div.loading::after {
+  top: -5px;
+  bottom: -5px;
+  left: -5px;
+  right: -5px;
+  border-top-color: var(--accent);
+  animation: 600ms l ease-in-out infinite;
+}
+
+@keyframes l {
+  to {
+    rotate: 360deg;
+  }
 }
 
 .skeleton {

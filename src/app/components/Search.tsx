@@ -70,7 +70,7 @@ const Search = ({
         >
           <p>{category.length}</p>
           <svg
-            className={click && `clicked`}
+            className={click ? `clicked` : undefined}
             width="20"
             height="20"
             viewBox="0 0 20 20"
@@ -96,16 +96,16 @@ const Search = ({
               cy="6"
               r="3"
               fill="var(--fg)"
-              stroke="white"
-              stroke-width="2"
+              stroke="var(--bg)"
+              strokeWidth="2"
             />
             <circle
               cx="8"
               cy="14"
               r="3"
               fill="var(--fg)"
-              stroke="white"
-              stroke-width="2"
+              stroke="var(--bg)"
+              strokeWidth="2"
             />
           </svg>
         </button>

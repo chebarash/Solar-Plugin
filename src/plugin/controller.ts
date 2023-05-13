@@ -17,6 +17,7 @@ let categories: Array<{
 let page: number = 0;
 let c: Array<string> = [];
 let search: string = ``;
+let error: string = ``;
 const lim = 100;
 const toasts = [
   `🔥 Awesome`,
@@ -29,10 +30,34 @@ const toasts = [
 ];
 const back = `https://solar-chebarashek.b4a.run/`;
 
+const load = async () => {
+  try {
+    const response = await fetch(back);
+    if (response.status == 400)
+      return figma.ui.postMessage({ error: (await response.json()).message });
+    icons = (await response.json()) as Icons;
+    categories = Object.keys(icons).map((name) => ({
+      name,
+      icon: Object.values(icons[name])[0],
+      length: Object.values(icons[name]).length,
+    }));
+    figma.ui.postMessage(getIcons());
+  } catch (err) {
+    error = err.message.replace(
+      `Failed to fetch`,
+      `Sorry, we couldn't run the plugin!`
+    );
+    figma.ui.postMessage({ error });
+  }
+};
+
+load();
+
 const toStr = (text: string) =>
   text.toLocaleLowerCase().replace(/[-_]+/g, "").replace(/ /g, "");
 
 const getIcons = () => {
+  if (!Object.keys(icons).length) return { error };
   let num = 0;
   const ico = Object.entries(icons)
     .filter(([category]) => (c.length ? c.includes(category) : true))
@@ -67,17 +92,6 @@ const getIcons = () => {
   };
 };
 
-(async () => {
-  const response = await fetch(back);
-  icons = (await response.json()) as Icons;
-  categories = Object.keys(icons).map((name) => ({
-    name,
-    icon: Object.values(icons[name])[0],
-    length: Object.values(icons[name]).length,
-  }));
-  figma.ui.postMessage(getIcons());
-})();
-
 figma.ui.onmessage = async ({
   type,
   value,
@@ -102,10 +116,14 @@ figma.ui.onmessage = async ({
       search = toStr(value as unknown as string);
       figma.ui.postMessage(getIcons());
       break;
+    case `error`:
+      load();
+      break;
     case `report`:
       await fetch(`${back}report?bug=${value}`);
       break;
     case `import`:
+      await fetch(`${back}import?icons=${value.join(`&icons=`)}`);
       const nodes = [];
       value.forEach((v, i) => {
         const [style, category, name]: Array<string> = v.split(` / `);

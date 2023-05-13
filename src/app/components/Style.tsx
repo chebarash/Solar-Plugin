@@ -18,7 +18,7 @@ const Style = ({ name, icon }: { name: string; icon: any }) => {
       }}
     >
       <svg
-        className={click && `clicked`}
+        className={click ? `clicked` : undefined}
         width="20"
         height="20"
         viewBox="0 0 20 20"

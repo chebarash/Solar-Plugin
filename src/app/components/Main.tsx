@@ -7,15 +7,17 @@ import Icons from "./Icons";
 import Loader from "./Loader";
 
 const Main = ({ menu }: { menu: () => any }) => {
-  const { icons, loading, selected, search, message } = IconsConsumer();
+  const { icons, loading, selected, search, message, error } = IconsConsumer();
   const len = Object.values(icons).map((v) => Object.keys(v).length);
-
   return (
     <div className="main">
-      <Styles />
-      {loading && !search.length ? (
+      {error ? <div></div> : <Styles />}
+      {error ||
+      ((!len.length || !len.reduce((a, b) => a + b)) && search.length) ? (
+        <Err />
+      ) : loading ? (
         <Loader />
-      ) : len.length && !!len.reduce((a, b) => a + b) ? (
+      ) : (
         <>
           <Icons buttons add />
           <div className={`fade${selected.length ? ` active` : ``}`}>
@@ -27,8 +29,6 @@ const Main = ({ menu }: { menu: () => any }) => {
             </button>
           </div>
         </>
-      ) : (
-        <Err />
       )}
     </div>
   );
