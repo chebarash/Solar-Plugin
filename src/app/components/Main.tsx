@@ -7,13 +7,11 @@ import Icons from "./Icons";
 import Loader from "./Loader";
 
 const Main = ({ menu }: { menu: () => any }) => {
-  const { icons, loading, selected, search, message, error } = IconsConsumer();
-  const len = Object.values(icons).map((v) => Object.keys(v).length);
+  const { loading, selected, search, message, error, len } = IconsConsumer();
   return (
     <div className="main">
       {error ? <div></div> : <Styles />}
-      {error ||
-      ((!len.length || !len.reduce((a, b) => a + b)) && search.length) ? (
+      {error || (!len && search.length) ? (
         <Err />
       ) : loading ? (
         <Loader />

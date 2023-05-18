@@ -89,6 +89,7 @@ const getIcons = () => {
     search,
     prev: !!page,
     next: len > page * lim + lim,
+    len,
   };
 };
 

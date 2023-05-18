@@ -76,6 +76,8 @@ textarea {
   --buttonBack: #e3e6ec;
   --boosty: #f05f2d;
   --boostyBg: #fdeae4;
+
+  --skeleton: #dce0e7;
 }
 
 button.accent,
@@ -470,12 +472,26 @@ body[style="user-select: none;"] .thumb {
 .styleBox {
   z-index: 999;
   position: relative;
-  background: #f4f6fa;
+  background: var(--bg);
   border-radius: 10px;
   padding: 3px;
   margin: 0 20px 0 20px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+}
+
+.styleSkeleton {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 34px;
+}
+
+.styleSkeleton div {
+  width: 14px;
+  height: 14px;
+  border-radius: 100%;
+  background: var(--skeleton);
 }
 
 .style {

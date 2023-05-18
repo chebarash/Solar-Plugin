@@ -76,6 +76,7 @@ export type ContextType = {
   setBanner: Dispatch<SetStateAction<boolean>>;
   message: Message;
   error?: string;
+  len: number;
 };
 
 const defaults: ContextType = {
@@ -171,6 +172,7 @@ const defaults: ContextType = {
   banner: true,
   setBanner: () => {},
   message: new Message(() => {}),
+  len: 0,
 };
 
 const IconsContext = createContext<ContextType>(defaults);
@@ -187,6 +189,7 @@ const useIcons = () => {
   const [search, setSearch] = useState<string>(defaults.search);
   const [selected, setSelected] = useState<Array<string>>(defaults.selected);
   const [error, setError] = useState<string>(defaults.error);
+  const [len, setLen] = useState<number>(defaults.len);
 
   useEffect(() => {
     window.onmessage = (event) => {
@@ -198,11 +201,12 @@ const useIcons = () => {
         event.data.pluginMessage.search
       )
         return;
-      const { icons, categories, prev, next } = event.data.pluginMessage;
+      const { icons, categories, prev, next, len } = event.data.pluginMessage;
       setIcons(icons);
       setCategories(categories);
       setPrev(prev);
       setNext(next);
+      setLen(len);
       setError(undefined);
     };
   }, [search]);
@@ -226,6 +230,7 @@ const useIcons = () => {
     banner,
     setBanner,
     message: new Message(setLoading),
+    len,
     error,
   };
 };
