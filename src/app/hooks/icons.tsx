@@ -5,11 +5,15 @@ import React, {
   useEffect,
   Dispatch,
   SetStateAction,
+  useCallback,
 } from "react";
 
 class Message {
   constructor(private setLoading: Dispatch<SetStateAction<boolean>>) {}
-  private msg(type: string, value: string | Array<string>) {
+  private msg(
+    type: string,
+    value: string | Array<string> | { [name: string]: string }
+  ) {
     this.setLoading(true);
     parent.postMessage(
       {
@@ -30,7 +34,7 @@ class Message {
   search(search: string) {
     this.msg(`search`, search);
   }
-  import(selected: Array<string>) {
+  import(selected: { [name: string]: string }) {
     this.msg(`import`, selected);
   }
   error() {
@@ -70,8 +74,9 @@ export type ContextType = {
   setStyle: Dispatch<SetStateAction<string>>;
   search: string;
   setSearch: Dispatch<SetStateAction<string>>;
-  selected: Array<string>;
-  setSelected: Dispatch<SetStateAction<Array<string>>>;
+  selected: { [name: string]: string };
+  setSelected: Dispatch<SetStateAction<{ [name: string]: string }>>;
+  toggleSelected: (style: string, category: string, name: string) => () => any;
   banner: boolean;
   setBanner: Dispatch<SetStateAction<boolean>>;
   message: Message;
@@ -167,8 +172,9 @@ const defaults: ContextType = {
   ],
   search: ``,
   setSearch: () => {},
-  selected: [],
+  selected: {},
   setSelected: () => {},
+  toggleSelected: () => () => {},
   banner: true,
   setBanner: () => {},
   message: new Message(() => {}),
@@ -187,9 +193,23 @@ const useIcons = () => {
   const [loading, setLoading] = useState<boolean>(defaults.loading);
   const [banner, setBanner] = useState<boolean>(defaults.banner);
   const [search, setSearch] = useState<string>(defaults.search);
-  const [selected, setSelected] = useState<Array<string>>(defaults.selected);
+  const [selected, setSelected] = useState<{ [name: string]: string }>(
+    defaults.selected
+  );
   const [error, setError] = useState<string>(defaults.error);
   const [len, setLen] = useState<number>(defaults.len);
+
+  const toggleSelected = useCallback(
+    (style: string, category: string, name: string) => () => {
+      const str = `${style} / ${category} / ${name}`;
+      if (selected[str]) {
+        const { [str]: _, ...other } = selected;
+        return setSelected(other);
+      }
+      setSelected({ [str]: icons[category][name][style], ...selected });
+    },
+    [selected, icons]
+  );
 
   useEffect(() => {
     window.onmessage = (event) => {
@@ -227,6 +247,7 @@ const useIcons = () => {
     setSearch,
     selected,
     setSelected,
+    toggleSelected,
     banner,
     setBanner,
     message: new Message(setLoading),

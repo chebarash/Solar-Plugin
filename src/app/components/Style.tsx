@@ -9,7 +9,9 @@ const Style = ({ name, icon }: { name: string; icon: any }) => {
       key={name}
       disabled={style === name}
       className={`style${style === name ? ` active` : ``}${
-        selected.some((s) => s.startsWith(`${name} / `)) ? ` selc` : ``
+        Object.keys(selected).some((s) => s.startsWith(`${name} / `))
+          ? ` selc`
+          : ``
       }`}
       onClick={() => {
         setStyle(name);

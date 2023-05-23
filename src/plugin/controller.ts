@@ -30,18 +30,19 @@ const toasts = [
 ];
 const back = `https://solar-chebarashek.b4a.run/`;
 
-const load = async () => {
+const toStr = (text: string) =>
+  text.toLocaleLowerCase().replace(/[-_]+/g, "").replace(/ /g, "");
+
+const getIcons = async () => {
   try {
-    const response = await fetch(`${back}data`);
+    const response = await fetch(
+      `${back}data?page=${page}&search=${search}&categories=${c.join(
+        `&categories=`
+      )}`
+    );
     if (response.status == 400)
       return figma.ui.postMessage({ error: (await response.json()).message });
-    icons = (await response.json()) as Icons;
-    categories = Object.keys(icons).map((name) => ({
-      name,
-      icon: Object.values(icons[name])[0],
-      length: Object.values(icons[name]).length,
-    }));
-    figma.ui.postMessage(getIcons());
+    figma.ui.postMessage(await response.json());
   } catch (err) {
     error = err.message.replace(
       `Failed to fetch`,
@@ -51,89 +52,49 @@ const load = async () => {
   }
 };
 
-load();
-
-const toStr = (text: string) =>
-  text.toLocaleLowerCase().replace(/[-_]+/g, "").replace(/ /g, "");
-
-const getIcons = () => {
-  if (!Object.keys(icons).length) return { error };
-  let num = 0;
-  const ico = Object.entries(icons)
-    .filter(([category]) => (c.length ? c.includes(category) : true))
-    .map(([c, n]) => [
-      c,
-      Object.fromEntries(
-        Object.entries(n).filter(([name]) =>
-          search.length ? toStr(name).includes(search) : true
-        )
-      ),
-    ]);
-  const len = ico
-    .map(([_n, v]) => Object.keys(v).length)
-    .reduce((a, b) => a + b);
-  if (len / lim < page) page--;
-  return {
-    icons: Object.fromEntries(
-      ico.map(([c, l]) => {
-        let s = lim * page - num;
-        let e = lim * page - num + lim;
-        if (s < 0) s = 0;
-        if (e < 0) e = 0;
-        const li = Object.fromEntries(Object.entries(l).slice(s, e));
-        num += Object.keys(l).length;
-        return [c, li];
-      })
-    ),
-    categories,
-    search,
-    prev: !!page,
-    next: len > page * lim + lim,
-    len,
-  };
-};
+getIcons();
 
 figma.ui.onmessage = async ({
   type,
   value,
 }: {
   type: string;
-  value: Array<string>;
+  value: string | Array<string> | { [name: string]: string };
 }) => {
   switch (type) {
     case `page`:
       if (value.length) page++;
       else page--;
       if (page < 0) page = 0;
-      figma.ui.postMessage(getIcons());
+      await getIcons();
       break;
     case `category`:
       if (c != value) page = 0;
-      c = value;
-      figma.ui.postMessage(getIcons());
+      c = value as Array<string>;
+      await getIcons();
       break;
     case `search`:
       page = 0;
       search = toStr(value as unknown as string);
-      figma.ui.postMessage(getIcons());
+      await getIcons();
       break;
     case `error`:
-      load();
+      await getIcons();
       break;
     case `report`:
       await fetch(`${back}report?bug=${value}`);
       break;
     case `import`:
-      await fetch(`${back}import?icons=${value.join(`&icons=`)}`);
+      if (typeof value !== `object`) return;
+      await fetch(`${back}import?icons=${Object.keys(value).join(`&icons=`)}`);
       const nodes = [];
-      value.forEach((v, i) => {
-        const [style, category, name]: Array<string> = v.split(` / `);
+      Object.entries(value).forEach(([name, iconSvg], i) => {
         const icon = figma.createComponent();
         icon.resizeWithoutConstraints(24, 24);
         icon.constrainProportions = true;
         icon.x = i * 30;
-        icon.name = v;
-        const node = figma.createNodeFromSvg(icons[category][name][style]);
+        icon.name = name;
+        const node = figma.createNodeFromSvg(iconSvg);
         node.children.forEach((child) => icon.appendChild(child));
         node.remove();
         figma.currentPage.appendChild(icon);

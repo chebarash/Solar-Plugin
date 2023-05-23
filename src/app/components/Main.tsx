@@ -8,6 +8,9 @@ import Loader from "./Loader";
 
 const Main = ({ menu }: { menu: () => any }) => {
   const { loading, selected, search, message, error, len } = IconsConsumer();
+
+  const selectedLength = Object.keys(selected).length;
+
   return (
     <div className="main">
       {error ? <div></div> : <Styles />}
@@ -18,12 +21,13 @@ const Main = ({ menu }: { menu: () => any }) => {
       ) : (
         <>
           <Icons buttons add />
-          <div className={`fade${selected.length ? ` active` : ``}`}>
+          <div className={`fade${selectedLength ? ` active` : ``}`}>
             <button className="accent" onClick={menu}>
               VIEW SELECTED
             </button>
             <button className="medium" onClick={() => message.import(selected)}>
-              Import {selected.length} icon{selected.length > 1 && `s`}
+              Import {selectedLength} icon
+              {selectedLength > 1 && `s`}
             </button>
           </div>
         </>

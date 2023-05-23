@@ -17,7 +17,7 @@ const Icons = ({
     icons,
     style,
     selected,
-    setSelected,
+    toggleSelected,
     banner,
     setBanner,
     prev,
@@ -65,18 +65,14 @@ const Icons = ({
           Object.entries(data[category]).map(([name, val]) => {
             const ico = (icon: string, style: string) => {
               const str = `${style} / ${category} / ${name}`;
-              const active = selected.includes(str);
+              const active = !!selected[str];
               return (
                 <Icon
                   key={str}
                   name={name}
                   size={viewSize}
                   selected={active}
-                  select={() =>
-                    setSelected((s) =>
-                      active ? s.filter((s) => s !== str) : [...s, str]
-                    )
-                  }
+                  select={toggleSelected(style, category, name)}
                   icon={icon}
                 />
               );

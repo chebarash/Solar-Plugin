@@ -4,30 +4,32 @@ import Icons from "./Icons";
 import Page from "./Page";
 
 const Selected = ({ close }: { close: () => any }) => {
-  const { icons, selected, setSelected, message } = IconsConsumer();
+  const { selected, setSelected, message } = IconsConsumer();
   const [i, setI] = useState<IconsType>();
+
+  const selectedLength = Object.keys(selected).length;
 
   useEffect(() => {
     const d: IconsType = {};
-    selected.forEach((n) => {
+    Object.entries(selected).forEach(([n, icon]) => {
       const [style, category, name]: Array<string> = n.split(` / `);
       if (!d[category]) d[category] = {};
       if (!d[category][name]) d[category][name] = {};
-      d[category][name][style] = icons[category][name][style];
+      d[category][name][style] = icon;
     });
     setI(d);
   }, []);
 
   return (
     <Page
-      title={`${selected.length} Selected icons`}
+      title={`${selectedLength} Selected icons`}
       close={close}
       r={() => {
-        if (!selected.length) close();
+        if (!selectedLength) close();
       }}
-      clear={() => setSelected([])}
+      clear={() => setSelected({})}
       footer={
-        <div className={`fade${selected.length ? ` active` : ``}`}>
+        <div className={`fade${selectedLength ? ` active` : ``}`}>
           <button className="medium" onClick={() => message.import(selected)}>
             IMPORT
           </button>
