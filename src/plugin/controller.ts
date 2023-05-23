@@ -32,7 +32,7 @@ const back = `https://solar-chebarashek.b4a.run/`;
 
 const load = async () => {
   try {
-    const response = await fetch(back);
+    const response = await fetch(`${back}data`);
     if (response.status == 400)
       return figma.ui.postMessage({ error: (await response.json()).message });
     icons = (await response.json()) as Icons;
