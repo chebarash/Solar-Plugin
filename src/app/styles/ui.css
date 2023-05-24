@@ -39,7 +39,8 @@ textarea {
 }
 
 .main div *,
-.menu * {
+.menu *,
+.disclaimer * {
   transition: all 200ms linear !important;
 }
 
@@ -1015,4 +1016,78 @@ body[style="user-select: none;"] .thumb {
   to {
     background-position-x: -20%;
   }
+}
+
+.disclaimer {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: rgba(0, 0, 0, 0.3);
+  z-index: 9999999999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.disclaimer > div {
+  display: flex;
+  flex-direction: column;
+  background: var(--settingsActive);
+  border-radius: 12px;
+  padding: 15px;
+  width: 90%;
+  gap: 10px;
+}
+
+.disclaimer > div > div {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+
+.disclaimer h2 {
+  font-weight: 500;
+  font-size: 20px;
+  color: var(--accent);
+}
+
+.disclaimer span {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 16px;
+  color: var(--fg);
+}
+
+.disclaimer span b {
+  font-weight: 500;
+  font-size: 16px;
+  color: var(--accent);
+}
+
+.disclaimer label {
+  font-weight: 400;
+  font-size: 16px;
+  color: var(--fg);
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  padding: 5px 2px;
+  cursor: pointer;
+}
+
+.disclaimer label button {
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--fg);
+  border-radius: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.disclaimer label button.checked {
+  border: 2px solid var(--accent);
+  background: var(--accent);
 }

@@ -82,6 +82,8 @@ export type ContextType = {
   message: Message;
   error?: string;
   len: number;
+  disclaimer: boolean;
+  hideDisclaimer: (dontShow: boolean) => any;
 };
 
 const defaults: ContextType = {
@@ -179,6 +181,8 @@ const defaults: ContextType = {
   setBanner: () => {},
   message: new Message(() => {}),
   len: 0,
+  disclaimer: false,
+  hideDisclaimer: () => {},
 };
 
 const IconsContext = createContext<ContextType>(defaults);
@@ -198,6 +202,7 @@ const useIcons = () => {
   );
   const [error, setError] = useState<string>(defaults.error);
   const [len, setLen] = useState<number>(defaults.len);
+  const [disclaimer, setDisclaimer] = useState<boolean>(defaults.disclaimer);
 
   const toggleSelected = useCallback(
     (style: string, category: string, name: string) => () => {
@@ -211,6 +216,17 @@ const useIcons = () => {
     [selected, icons]
   );
 
+  const hideDisclaimer = (dontShow: boolean) => {
+    setDisclaimer(false);
+    if (dontShow)
+      parent.postMessage(
+        {
+          pluginMessage: { type: `disclaimer`, value: `` },
+        },
+        "*"
+      );
+  };
+
   useEffect(() => {
     window.onmessage = (event) => {
       setLoading(false);
@@ -221,15 +237,23 @@ const useIcons = () => {
         event.data.pluginMessage.search
       )
         return;
-      const { icons, categories, prev, next, len } = event.data.pluginMessage;
+      const {
+        icons,
+        categories: c,
+        prev,
+        next,
+        len,
+        disclaimer,
+      } = event.data.pluginMessage;
       setIcons(icons);
-      setCategories(categories);
+      setCategories(c);
       setPrev(prev);
       setNext(next);
       setLen(len);
+      if (!categories.length) setDisclaimer(disclaimer);
       setError(undefined);
     };
-  }, [search]);
+  }, [search, categories]);
 
   return {
     ...defaults,
@@ -253,6 +277,8 @@ const useIcons = () => {
     message: new Message(setLoading),
     len,
     error,
+    disclaimer,
+    hideDisclaimer,
   };
 };
 

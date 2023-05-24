@@ -23,16 +23,19 @@ const toasts = [
   `💖 You\`re breathtaking!`,
 ];
 const back = `https://solar-chebarashek.b4a.run/`;
+let disclaimer: boolean = true;
 
 const load = async () => {
   try {
     const ico = figma.root.getPluginData(`icons`);
     const dat = figma.root.getPluginData(`date`);
+    disclaimer = !figma.root.getPluginData(`disclaimer`);
     if (
       ico.length &&
       dat.length &&
       Date.now() - parseInt(dat) < 1000 * 60 * 60 * 24
     ) {
+      await fetch(`${back}load`);
       icons = JSON.parse(ico);
     } else {
       const response = await fetch(`${back}data`);
@@ -95,6 +98,7 @@ const getIcons = () => {
     prev: !!page,
     next: len > page * lim + lim,
     len,
+    disclaimer,
   });
 };
 
@@ -124,6 +128,10 @@ figma.ui.onmessage = async ({
       break;
     case `error`:
       getIcons();
+      break;
+    case `disclaimer`:
+      figma.root.setPluginData(`disclaimer`, `true`);
+      disclaimer = false;
       break;
     case `report`:
       await fetch(`${back}report?bug=${value}`);

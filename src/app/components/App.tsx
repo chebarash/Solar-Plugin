@@ -7,16 +7,20 @@ import Menu from "./Menu";
 import Search from "./Search";
 import Settings from "./Settings";
 import Selected from "./Selected";
+import Disclaimer from "./Disclaimer";
+import IconsConsumer from "../hooks/icons";
 
 function App() {
   const [settings, setSettings] = useState<boolean>(false);
   const [page, setPage] = useState<string>(``);
   const catSearch = useState<string>(``);
+  const { disclaimer } = IconsConsumer();
 
   switch (page) {
     case ``:
       return (
         <div className="app">
+          {disclaimer && <Disclaimer />}
           <Search
             open={settings}
             settings={[settings, setSettings]}
