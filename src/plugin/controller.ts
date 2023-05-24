@@ -8,7 +8,20 @@ type Icons = {
   };
 };
 
-let icons: Icons = {};
+type Res = {
+  icons: Icons;
+  categories: Array<{
+    name: string;
+    icon: { [style: string]: string };
+    length: number;
+  }>;
+  search: string;
+  prev: boolean;
+  next: boolean;
+  len: number;
+};
+
+const icons: { [opt: string]: Res } = {};
 let categories: Array<{
   name: string;
   icon: { [style: string]: string };
@@ -35,14 +48,18 @@ const toStr = (text: string) =>
 
 const getIcons = async () => {
   try {
+    const opt = JSON.stringify({ page, search, c });
+    if (icons[opt]) return figma.ui.postMessage(icons[opt]);
     const response = await fetch(
-      `${back}data?page=${page}&search=${search}&categories=${c.join(
-        `&categories=`
-      )}`
+      `${back}data?page=${page}&search=${encodeURIComponent(
+        search
+      )}&categories=${c.map((c) => encodeURIComponent(c)).join(`&categories=`)}`
     );
     if (response.status == 400)
       return figma.ui.postMessage({ error: (await response.json()).message });
-    figma.ui.postMessage(await response.json());
+    const res = (await response.json()) as Res;
+    icons[opt] = res;
+    figma.ui.postMessage(res);
   } catch (err) {
     error = err.message.replace(
       `Failed to fetch`,
