@@ -7,26 +7,7 @@ type Icons = {
     };
   };
 };
-
-type Res = {
-  icons: Icons;
-  categories: Array<{
-    name: string;
-    icon: { [style: string]: string };
-    length: number;
-  }>;
-  search: string;
-  prev: boolean;
-  next: boolean;
-  len: number;
-};
-
-const icons: { [opt: string]: Res } = {};
-let categories: Array<{
-  name: string;
-  icon: { [style: string]: string };
-  length: number;
-}> = [];
+let icons: Icons = {};
 let page: number = 0;
 let c: Array<string> = [];
 let search: string = ``;
@@ -43,23 +24,25 @@ const toasts = [
 ];
 const back = `https://solar-chebarashek.b4a.run/`;
 
-const toStr = (text: string) =>
-  text.toLocaleLowerCase().replace(/[-_]+/g, "").replace(/ /g, "");
-
-const getIcons = async () => {
+const load = async () => {
   try {
-    const opt = JSON.stringify({ page, search, c });
-    if (icons[opt]) return figma.ui.postMessage(icons[opt]);
-    const response = await fetch(
-      `${back}data?page=${page}&search=${encodeURIComponent(
-        search
-      )}&categories=${c.map((c) => encodeURIComponent(c)).join(`&categories=`)}`
-    );
-    if (response.status == 400)
-      return figma.ui.postMessage({ error: (await response.json()).message });
-    const res = (await response.json()) as Res;
-    icons[opt] = res;
-    figma.ui.postMessage(res);
+    const ico = figma.root.getPluginData(`icons`);
+    const dat = figma.root.getPluginData(`date`);
+    if (
+      ico.length &&
+      dat.length &&
+      Date.now() - parseInt(dat) < 1000 * 60 * 60 * 24
+    ) {
+      icons = JSON.parse(ico);
+    } else {
+      const response = await fetch(`${back}data`);
+      if (response.status == 400)
+        return figma.ui.postMessage({ error: (await response.json()).message });
+      icons = await response.json();
+      figma.root.setPluginData(`icons`, JSON.stringify(icons));
+      figma.root.setPluginData(`date`, `${Date.now()}`);
+    }
+    getIcons();
   } catch (err) {
     error = err.message.replace(
       `Failed to fetch`,
@@ -69,7 +52,51 @@ const getIcons = async () => {
   }
 };
 
-getIcons();
+figma.on(`run`, load);
+
+const toStr = (text: string) =>
+  text.toLocaleLowerCase().replace(/[-_]+/g, "").replace(/ /g, "");
+
+const getIcons = () => {
+  if (!Object.keys(icons).length) return { error };
+  let num = 0;
+  const ico = Object.entries(icons)
+    .filter(([category]) => (c.length ? c.includes(category) : true))
+    .map(([c, n]) => [
+      c,
+      Object.fromEntries(
+        Object.entries(n).filter(([name]) =>
+          search.length ? toStr(name).includes(search) : true
+        )
+      ),
+    ]);
+  const len = ico
+    .map(([_n, v]) => Object.keys(v).length)
+    .reduce((a, b) => a + b);
+  if (len / lim < page) page--;
+  figma.ui.postMessage({
+    icons: Object.fromEntries(
+      ico.map(([c, l]) => {
+        let s = lim * page - num;
+        let e = lim * page - num + lim;
+        if (s < 0) s = 0;
+        if (e < 0) e = 0;
+        const li = Object.fromEntries(Object.entries(l).slice(s, e));
+        num += Object.keys(l).length;
+        return [c, li];
+      })
+    ),
+    categories: Object.keys(icons).map((name) => ({
+      name,
+      icon: Object.values(icons[name])[0],
+      length: Object.values(icons[name]).length,
+    })),
+    search,
+    prev: !!page,
+    next: len > page * lim + lim,
+    len,
+  });
+};
 
 figma.ui.onmessage = async ({
   type,
@@ -83,20 +110,20 @@ figma.ui.onmessage = async ({
       if (value.length) page++;
       else page--;
       if (page < 0) page = 0;
-      await getIcons();
+      getIcons();
       break;
     case `category`:
       if (c != value) page = 0;
       c = value as Array<string>;
-      await getIcons();
+      getIcons();
       break;
     case `search`:
       page = 0;
       search = toStr(value as unknown as string);
-      await getIcons();
+      getIcons();
       break;
     case `error`:
-      await getIcons();
+      getIcons();
       break;
     case `report`:
       await fetch(`${back}report?bug=${value}`);

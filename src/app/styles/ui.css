@@ -35,8 +35,12 @@ textarea {
   margin: 0;
   padding: 0;
   border: none;
-  transition: all 200ms linear !important;
   user-select: none;
+}
+
+.main div *,
+.menu * {
+  transition: all 200ms linear !important;
 }
 
 :root {
@@ -368,6 +372,7 @@ body[style="user-select: none;"] .thumb {
   align-items: center;
   gap: 8px;
   padding: 0 20px;
+  transition: all 200ms linear !important;
 }
 
 .fade.active {
