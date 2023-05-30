@@ -9,12 +9,11 @@ import React, {
 } from "react";
 
 class Message {
-  constructor(private setLoading: Dispatch<SetStateAction<boolean>>) {}
+  constructor() {}
   private msg(
     type: string,
     value: string | Array<string> | { [name: string]: string }
   ) {
-    this.setLoading(true);
     parent.postMessage(
       {
         pluginMessage: { type, value },
@@ -155,7 +154,7 @@ const defaults: ContextType = {
   toggleSelected: () => () => {},
   banner: true,
   setBanner: () => {},
-  message: new Message(() => {}),
+  message: new Message(),
   disclaimer: false,
   hideDisclaimer: () => {},
   len: 0,
@@ -241,7 +240,7 @@ const useIcons = () => {
     toggleSelected,
     banner,
     setBanner,
-    message: new Message(setLoading),
+    message: new Message(),
     error,
     disclaimer,
     hideDisclaimer,
