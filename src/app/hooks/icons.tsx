@@ -22,18 +22,6 @@ class Message {
       "*"
     );
   }
-  prev() {
-    this.msg(`page`, []);
-  }
-  next() {
-    this.msg(`page`, [``]);
-  }
-  category(category: Array<string>) {
-    this.msg(`category`, category);
-  }
-  search(search: string) {
-    this.msg(`search`, search);
-  }
   import(selected: { [name: string]: string }) {
     this.msg(`import`, selected);
   }
@@ -52,24 +40,15 @@ export type IconsType = {
   };
 };
 
-export type CategoriesType = Array<{
-  name: string;
-  icon: IconType;
-  length: number;
-}>;
-
 export type StylesType = Array<{ name: string; icon: any }>;
 
 export type ContextType = {
-  prev: boolean;
-  next: boolean;
   icons: IconsType;
+  filteredIcons: IconsType;
   loading: boolean;
   style: string;
   category: Array<string>;
   setCategory: Dispatch<SetStateAction<Array<string>>>;
-  categories: CategoriesType;
-  setCategories: Dispatch<SetStateAction<CategoriesType>>;
   styles: StylesType;
   setStyle: Dispatch<SetStateAction<string>>;
   search: string;
@@ -81,21 +60,18 @@ export type ContextType = {
   setBanner: Dispatch<SetStateAction<boolean>>;
   message: Message;
   error?: string;
-  len: number;
   disclaimer: boolean;
   hideDisclaimer: (dontShow: boolean) => any;
+  len: number;
 };
 
 const defaults: ContextType = {
-  prev: false,
-  next: true,
   icons: {},
+  filteredIcons: {},
   loading: true,
   style: `Linear`,
   category: [],
   setCategory: () => {},
-  categories: [],
-  setCategories: () => {},
   setStyle: () => {},
   styles: [
     {
@@ -180,20 +156,20 @@ const defaults: ContextType = {
   banner: true,
   setBanner: () => {},
   message: new Message(() => {}),
-  len: 0,
   disclaimer: false,
   hideDisclaimer: () => {},
+  len: 0,
 };
 
 const IconsContext = createContext<ContextType>(defaults);
 
+const toStr = (text: string) =>
+  text.toLocaleLowerCase().replace(/[-_]+/g, "").replace(/ /g, "");
+
 const useIcons = () => {
-  const [prev, setPrev] = useState(defaults.prev);
-  const [next, setNext] = useState(defaults.next);
   const [icons, setIcons] = useState(defaults.icons);
   const [style, setStyle] = useState(defaults.style);
   const [category, setCategory] = useState(defaults.category);
-  const [categories, setCategories] = useState(defaults.categories);
   const [loading, setLoading] = useState<boolean>(defaults.loading);
   const [banner, setBanner] = useState<boolean>(defaults.banner);
   const [search, setSearch] = useState<string>(defaults.search);
@@ -201,7 +177,6 @@ const useIcons = () => {
     defaults.selected
   );
   const [error, setError] = useState<string>(defaults.error);
-  const [len, setLen] = useState<number>(defaults.len);
   const [disclaimer, setDisclaimer] = useState<boolean>(defaults.disclaimer);
 
   const toggleSelected = useCallback(
@@ -232,40 +207,32 @@ const useIcons = () => {
       setLoading(false);
       const err = event.data.pluginMessage.error;
       if (err) return setError(err);
-      if (
-        search.toLocaleLowerCase().replace(/[-_]+/g, "").replace(/ /g, "") !=
-        event.data.pluginMessage.search
-      )
-        return;
-      const {
-        icons,
-        categories: c,
-        prev,
-        next,
-        len,
-        disclaimer,
-      } = event.data.pluginMessage;
+      const { icons, disclaimer } = event.data.pluginMessage;
       setIcons(icons);
-      setCategories(c);
-      setPrev(prev);
-      setNext(next);
-      setLen(len);
-      if (!categories.length) setDisclaimer(disclaimer);
+      setDisclaimer(disclaimer);
       setError(undefined);
     };
-  }, [search, categories]);
+  }, [search]);
+
+  const filteredIcons = Object.entries(icons)
+    .filter(([c]) => (category.length ? category.includes(c) : true))
+    .map(([c, n]) => [
+      c,
+      Object.fromEntries(
+        Object.entries(n).filter(([name]) =>
+          toStr(search).length ? toStr(name).includes(toStr(search)) : true
+        )
+      ),
+    ]);
 
   return {
     ...defaults,
-    prev,
-    next,
     icons,
+    filteredIcons: Object.fromEntries(filteredIcons),
     loading,
     style,
     category,
     setCategory,
-    categories,
-    setCategories,
     setStyle,
     search,
     setSearch,
@@ -275,10 +242,14 @@ const useIcons = () => {
     banner,
     setBanner,
     message: new Message(setLoading),
-    len,
     error,
     disclaimer,
     hideDisclaimer,
+    len: filteredIcons.length
+      ? filteredIcons
+          .map(([_n, v]) => Object.keys(v).length)
+          .reduce((a, b) => a + b)
+      : 0,
   };
 };
 

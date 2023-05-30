@@ -68,7 +68,7 @@ const Menu = ({ close }: { close: () => any }) => {
 
   return (
     <Page title="Main menu" close={close}>
-      <div className="me">
+      <div className="menu">
         <form
           onSubmit={(e) => {
             e.preventDefault();

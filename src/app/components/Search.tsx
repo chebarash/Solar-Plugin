@@ -3,39 +3,24 @@ import IconsConsumer from "../hooks/icons";
 
 const Search = ({
   open,
-  settings: [settings, setSettings],
+  settings,
   menu,
   catSearch: [catSearch, setCatSearch],
 }: {
   open: boolean;
-  settings: [boolean, Dispatch<SetStateAction<boolean>>];
+  settings: Dispatch<SetStateAction<boolean>>;
   menu: () => any;
   catSearch: [string, Dispatch<SetStateAction<string>>];
 }) => {
-  const {
-    search,
-    setSearch,
-    categories,
-    category,
-    message,
-    len,
-    loading,
-    error,
-  } = IconsConsumer();
+  const { icons, search, setSearch, category, len, loading, error } =
+    IconsConsumer();
   const [click, setClick] = useState<boolean>(false);
   const [l, setL] = useState<boolean>(true);
   useEffect(() => {
     if (!loading) setL(false);
   }, [loading]);
   return (
-    <div
-      style={{
-        display: `flex`,
-        gridGap: 8,
-        padding: `20px 20px 0 20px`,
-        height: 70,
-      }}
-    >
+    <div className="search">
       {l || error ? (
         <>
           <div
@@ -139,7 +124,7 @@ const Search = ({
               className="input"
               placeholder={`Search${
                 open
-                  ? ` ${categories.length} categories`
+                  ? ` ${Object.keys(icons).length} categories`
                   : len
                   ? ` ${len} icon${len > 1 ? `s` : ``}`
                   : ``
@@ -149,7 +134,6 @@ const Search = ({
               onChange={(e) => {
                 if (open) return setCatSearch(e.target.value);
                 setSearch(e.target.value);
-                message.search(e.target.value);
               }}
             />
             <button
@@ -158,8 +142,7 @@ const Search = ({
                 setClick(true);
                 setTimeout(() => setClick(false), 300);
                 setCatSearch(``);
-                setSettings((s) => !s);
-                if (settings) message.category(category);
+                settings((s) => !s);
               }}
             >
               <p>{category.length}</p>

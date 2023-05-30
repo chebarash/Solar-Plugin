@@ -39,8 +39,10 @@ textarea {
 }
 
 .main div *,
-.menu *,
-.disclaimer * {
+.page *,
+.disclaimer *,
+.box *,
+.search > * * {
   transition: all 200ms linear !important;
 }
 
@@ -162,19 +164,32 @@ button.back:focus {
   background: var(--buttonBack);
 }
 
+.search {
+  display: flex;
+  gap: 8px;
+  padding: 20px 24px 0 24px;
+  height: 70px;
+}
+
 .icon {
-  position: relative;
-  width: 100%;
-  height: 0;
-  padding-top: 100%;
+  padding: 4px;
+  display: flex;
+}
+
+.container:hover {
+  box-shadow: var(--iconShadow);
+  z-index: 99;
+}
+
+.container {
   border-radius: 12px;
   border: 1px solid var(--iconBorder);
   background: var(--icon);
-}
-
-.icon:hover {
-  box-shadow: var(--iconShadow);
-  z-index: 99;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  position: relative;
 }
 
 .title {
@@ -230,19 +245,8 @@ button.back:focus {
   margin: 0 14px;
 }
 
-.icon.hover:hover .title {
+.container.hover:hover .title {
   opacity: 1;
-}
-
-.content {
-  display: flex;
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  align-items: center;
-  justify-content: center;
 }
 
 .content svg {
@@ -250,12 +254,12 @@ button.back:focus {
   height: 32px;
 }
 
-.icon.selected {
+.container.selected {
   background: var(--iconActive);
   border: 1px solid var(--iconActiveBorder);
 }
 
-.icon > svg {
+.container > svg {
   scale: 0;
   position: absolute;
   top: -3px;
@@ -265,30 +269,30 @@ button.back:focus {
   transition: scale 100ms ease-in !important;
 }
 
-.icon.selected > svg {
+.container.selected > svg {
   scale: 1;
 }
 
 .app {
   flex: 1;
   display: grid;
+  gap: 15px;
   grid-template-rows: auto 1fr;
 }
 
-.menu {
+.page {
   flex: 1;
   display: grid;
   grid-template-rows: auto 1fr;
 }
 
 .main {
-  margin-top: 15px;
   display: grid;
   grid-template-rows: auto 1fr;
 }
 
 .app,
-.menu,
+.page,
 .main,
 .box {
   animation-duration: 500ms;
@@ -481,7 +485,7 @@ body[style="user-select: none;"] .thumb {
   background: var(--bg);
   border-radius: 10px;
   padding: 3px;
-  margin: 0 20px 0 20px;
+  margin: 0 24px 0 24px;
   display: grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
 }
@@ -654,11 +658,13 @@ body[style="user-select: none;"] .thumb {
 }
 
 .box {
+  overflow-y: auto;
   display: flex;
   align-items: flex-start;
   flex-direction: column;
   gap: 10px;
-  padding: 15px 20px 20px 20px;
+  margin-right: 9px;
+  padding: 5px 8px 20px 20px;
 }
 
 .box div {
@@ -669,7 +675,6 @@ body[style="user-select: none;"] .thumb {
 
 .head {
   display: flex;
-  justify-content: space-between;
   align-items: center;
   width: 100%;
 }
@@ -687,6 +692,7 @@ body[style="user-select: none;"] .thumb {
   font-weight: 400;
   font-size: 12px;
   color: var(--settings);
+  margin-left: 200px;
 }
 
 .head button:hover {
@@ -708,8 +714,10 @@ body[style="user-select: none;"] .thumb {
   margin: auto 0;
 }
 
-.me {
-  padding: 15px 20px 20px 20px;
+.menu {
+  overflow-y: auto;
+  margin-right: 9px;
+  padding: 15px 8px 20px 20px;
   display: flex;
   flex-direction: column;
   gap: 20px;
@@ -1089,5 +1097,81 @@ body[style="user-select: none;"] .thumb {
 
 .disclaimer label button.checked {
   border: 2px solid var(--accent);
+  background: var(--accent);
+}
+
+.list {
+  padding: 11px 8px 11px 11px;
+}
+
+.listBox {
+  padding: 0 9px;
+  position: relative;
+  display: flex;
+}
+
+.listBox {
+  position: relative;
+}
+
+.listBox::before,
+.listBox::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 15px;
+  z-index: 9999999;
+  pointer-events: none;
+}
+
+.listBox::before {
+  top: 0;
+  background: linear-gradient(0deg, rgba(255, 255, 255, 0) 0%, #ffffff 50.52%);
+}
+
+.listBox::after {
+  bottom: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0) 0%,
+    #ffffff 50.52%
+  );
+}
+
+.list > div {
+  position: relative;
+}
+
+.list::-webkit-scrollbar-button {
+  height: 15px;
+  background: #ffffff;
+}
+
+.box::-webkit-scrollbar-button,
+.menu::-webkit-scrollbar-button {
+  height: 10px;
+  background: #ffffff;
+}
+
+.list::-webkit-scrollbar,
+.box::-webkit-scrollbar,
+.menu::-webkit-scrollbar {
+  border-radius: 3px;
+  background: var(--track);
+  cursor: pointer;
+  width: 3px;
+}
+
+.list::-webkit-scrollbar-thumb,
+.box::-webkit-scrollbar-thumb,
+.menu::-webkit-scrollbar-thumb {
+  background: var(--thumb);
+  border-radius: 3px;
+}
+
+.list::-webkit-scrollbar-thumb:hover,
+.box::-webkit-scrollbar-thumb:hover,
+.menu::-webkit-scrollbar-thumb:hover {
   background: var(--accent);
 }

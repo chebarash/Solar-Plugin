@@ -9,9 +9,10 @@
   "author": "",
   "license": "",
   "dependencies": {
+    "@types/react-window": "^1.8.5",
     "react": "^18.2.0",
-    "react-custom-scrollbars-2": "^4.5.0",
-    "react-dom": "^18.2.0"
+    "react-dom": "^18.2.0",
+    "react-window": "^1.8.9"
   },
   "devDependencies": {
     "@figma/plugin-typings": "^1.50.0",

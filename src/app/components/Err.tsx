@@ -17,7 +17,6 @@ const Err = ({ button = true }: { button?: boolean }) => {
           className="accent"
           onClick={() => {
             setSearch(``);
-            message.search(``);
             if (error) message.error();
           }}
           style={{ width: `max-content`, padding: `14px 30px` }}

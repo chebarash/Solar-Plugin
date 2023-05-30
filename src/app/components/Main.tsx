@@ -5,9 +5,11 @@ import Err from "./Err";
 import IconsConsumer from "../hooks/icons";
 import Icons from "./Icons";
 import Loader from "./Loader";
+import Banner from "./Banner";
 
 const Main = ({ menu }: { menu: () => any }) => {
-  const { loading, selected, search, message, error, len } = IconsConsumer();
+  const { loading, selected, search, message, error, len, banner, setBanner } =
+    IconsConsumer();
 
   const selectedLength = Object.keys(selected).length;
 
@@ -20,7 +22,8 @@ const Main = ({ menu }: { menu: () => any }) => {
         <Loader />
       ) : (
         <>
-          <Icons buttons add />
+          {banner && <Banner hide={() => setBanner(false)} />}
+          <Icons />
           <div className={`fade${selectedLength ? ` active` : ``}`}>
             <button className="accent" onClick={menu}>
               VIEW SELECTED

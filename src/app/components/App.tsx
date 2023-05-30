@@ -23,7 +23,7 @@ function App() {
           {disclaimer && <Disclaimer />}
           <Search
             open={settings}
-            settings={[settings, setSettings]}
+            settings={setSettings}
             menu={() => setPage(`menu`)}
             catSearch={catSearch}
           />

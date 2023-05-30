@@ -1,5 +1,4 @@
 import React from "react";
-import Scrollbar from "./Scrollbar";
 
 const Page = ({
   title,
@@ -17,7 +16,7 @@ const Page = ({
   footer?: any;
 }) => {
   return (
-    <div className="menu" ref={r}>
+    <div className="page" ref={r}>
       <div className="header">
         <button className="back" onClick={close}>
           <svg width="30" height="30" viewBox="0 0 30 30" fill="none">
@@ -42,7 +41,7 @@ const Page = ({
           </button>
         )}
       </div>
-      <Scrollbar>{children}</Scrollbar>
+      {children}
       {footer}
     </div>
   );

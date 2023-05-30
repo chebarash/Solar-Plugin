@@ -129,7 +129,6 @@ const Banner = ({ hide }: { hide: () => any }) => {
     <a
       style={{
         background,
-        gridColumn: `1 / -1`,
         height: 40,
         borderRadius: 10,
         backgroundPosition: `center`,
@@ -139,7 +138,8 @@ const Banner = ({ hide }: { hide: () => any }) => {
         justifyContent: `space-between`,
         alignItems: `center`,
         padding: `10px 15px`,
-        marginBottom: 7,
+        marginTop: 15,
+        margin: `15px 24px 0 24px`,
         overflow: `hidden`,
         position: `relative`,
       }}
