@@ -9,7 +9,7 @@
   "ui": "dist/ui.html",
   "networkAccess": {
     "allowedDomains": [
-      "solar-chebarashek.b4a.run",
+      "solariconset.com",
       "fonts.googleapis.com",
       "fonts.gstatic.com"
     ]

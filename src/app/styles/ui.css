@@ -224,7 +224,7 @@ button.back:focus {
 
 .title.top svg {
   order: 1;
-  transform: rotate(180deg);
+  rotate: 180deg;
 }
 
 .title.bottom {
@@ -242,6 +242,7 @@ button.back:focus {
 }
 
 .title svg {
+  transition: none !important;
   margin: 0 14px;
 }
 
@@ -997,7 +998,7 @@ body[style="user-select: none;"] .thumb {
 .skeleton {
   height: 100%;
   overflow: hidden;
-  padding: 15px 20px 20px 20px;
+  padding: 15px 24px 20px 24px;
   display: grid;
   grid-gap: 8px;
   grid-template-columns: repeat(auto-fill, minmax(min(62px, 100%), 1fr));

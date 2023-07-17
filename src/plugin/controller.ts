@@ -18,7 +18,7 @@ const toasts = [
   `🤘 You rock!`,
   `💖 You\`re breathtaking!`,
 ];
-const back = `https://solar-chebarashek.b4a.run/`;
+const baseUrl = `https://solariconset.com/`;
 let disclaimer: boolean = true;
 
 const load = async () => {
@@ -31,10 +31,10 @@ const load = async () => {
       dat.length &&
       Date.now() - parseInt(dat) < 1000 * 60 * 60 * 24
     ) {
-      await fetch(`${back}load`);
+      await fetch(`${baseUrl}load`);
       icons = JSON.parse(ico);
     } else {
-      const response = await fetch(`${back}data`);
+      const response = await fetch(`${baseUrl}data`);
       if (response.status == 400)
         return figma.ui.postMessage({ error: (await response.json()).message });
       icons = await response.json();
@@ -67,19 +67,21 @@ figma.ui.onmessage = async ({
 }) => {
   switch (type) {
     case `error`:
-      getIcons();
+      load();
       break;
     case `disclaimer`:
       figma.root.setPluginData(`disclaimer`, `true`);
       disclaimer = false;
       break;
     case `report`:
-      await fetch(`${back}report?bug=${encodeURIComponent(value as string)}`);
+      await fetch(
+        `${baseUrl}report?bug=${encodeURIComponent(value as string)}`
+      );
       break;
     case `import`:
       if (typeof value !== `object`) return;
       await fetch(
-        `${back}import?icons=${Object.keys(value)
+        `${baseUrl}import?icons=${Object.keys(value)
           .map((v) => encodeURIComponent(v))
           .join(`&icons=`)}`
       );
