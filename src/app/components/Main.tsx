@@ -30,7 +30,7 @@ const Main = ({ menu }: { menu: () => any }) => {
             </button>
             <button className="medium" onClick={() => message.import(selected)}>
               Import {selectedLength} icon
-              {selectedLength > 1 && `s`}
+              {selectedLength != 1 && `s`}
             </button>
           </div>
         </>

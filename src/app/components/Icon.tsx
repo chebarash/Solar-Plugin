@@ -43,13 +43,13 @@ const Icon = ({
             cx="12"
             cy="12"
             r="11"
-            stroke="white"
+            stroke="var(--iconCheck)"
             strokeWidth="2"
             fill="var(--accent)"
           />
           <path
             d="M8.5 12L11 15L16 9"
-            stroke="white"
+            stroke="var(--iconCheck)"
             strokeWidth="2"
             strokeLinecap="round"
             strokeLinejoin="round"
@@ -57,7 +57,10 @@ const Icon = ({
         </svg>
         <div className={`title ${position(offsetTop)}`}>
           <svg width="18" height="8" viewBox="0 0 18 8" fill="none">
-            <path d="M9 0C5.5 0 4 8 0 8H18C14 8 12.5 0 9 0Z" fill="#101833" />
+            <path
+              d="M9 0C5.5 0 4 8 0 8H18C14 8 12.5 0 9 0Z"
+              fill="var(--titleBg)"
+            />
           </svg>
           <p>{name}</p>
         </div>

@@ -9,9 +9,9 @@
   "ui": "dist/ui.html",
   "networkAccess": {
     "allowedDomains": [
-      "solariconset.com",
-      "fonts.googleapis.com",
-      "fonts.gstatic.com"
+      "https://solariconset.com/",
+      "https://fonts.googleapis.com",
+      "https://fonts.gstatic.com"
     ]
   }
 }

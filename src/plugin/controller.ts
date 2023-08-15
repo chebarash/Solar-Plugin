@@ -1,4 +1,4 @@
-figma.showUI(__html__, { width: 390, height: 530 });
+figma.showUI(__html__, { width: 390, height: 530, themeColors: true });
 
 type Icons = {
   [category: string]: {

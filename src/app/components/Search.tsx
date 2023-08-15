@@ -99,43 +99,44 @@ const Search = ({
               flex: 1,
             }}
           >
-            <svg
-              style={{ position: `absolute`, left: 15, pointerEvents: `none` }}
-              width="20"
-              height="20"
-              viewBox="0 0 20 20"
-              fill="none"
-            >
-              <circle
-                cx="9.66732"
-                cy="9.66671"
-                r="6.33333"
-                stroke="var(--fg)"
-                strokeWidth="1.5"
-              />
-              <path
-                d="M14.334 14.3334L16.6673 16.6667"
-                stroke="var(--fg)"
-                strokeWidth="1.5"
-                strokeLinecap="round"
-              />
-            </svg>
-            <input
-              className="input"
-              placeholder={`Search${
-                open
-                  ? ` ${Object.keys(icons).length} categories`
-                  : len
-                  ? ` ${len} icon${len > 1 ? `s` : ``}`
-                  : ``
-              }`}
-              type="text"
-              value={open ? catSearch : search}
-              onChange={(e) => {
-                if (open) return setCatSearch(e.target.value);
-                setSearch(e.target.value);
+            <span
+              style={{
+                position: `relative`,
+                display: `flex`,
+                alignItems: `center`,
               }}
-            />
+            >
+              <svg
+                className="magnifer"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+              >
+                <path
+                  d="M10.0007 16.1282V19.4281M14.4791 14.0069C12.0058 16.4802 7.99571 16.4802 5.52239 14.0069C3.04907 11.5336 3.04907 7.52356 5.52239 5.05024C7.99571 2.57692 12.0058 2.57692 14.4791 5.05024C16.9524 7.52356 16.9524 11.5336 14.4791 14.0069Z"
+                  stroke="var(--fg)"
+                  stroke-width="1.5"
+                  stroke-linecap="round"
+                />
+              </svg>
+              <input
+                className="input"
+                placeholder={`Search${
+                  open
+                    ? ` ${Object.keys(icons).length} categories`
+                    : len
+                    ? ` ${len} icon${len != 1 ? `s` : ``}`
+                    : ``
+                }`}
+                type="text"
+                value={open ? catSearch : search}
+                onChange={(e) => {
+                  if (open) return setCatSearch(e.target.value);
+                  setSearch(e.target.value);
+                }}
+              />
+            </span>
             <button
               className={`settings${category.length ? ` active` : ``}`}
               onClick={() => {

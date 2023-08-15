@@ -22,11 +22,8 @@ const Selected = ({ close }: { close: () => any }) => {
 
   return (
     <Page
-      title={`${selectedLength} Selected icons`}
+      title={`${selectedLength} Selected icon${selectedLength != 1 ? `s` : ``}`}
       close={close}
-      r={() => {
-        if (!selectedLength) close();
-      }}
       clear={() => setSelected({})}
       footer={
         <div className={`fade${selectedLength ? ` active` : ``}`}>
