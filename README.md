@@ -1,40 +1,22 @@
-Below are the steps to get your plugin running. You can also find instructions at:
+# Why use this plugin?
 
-  https://www.figma.com/plugin-docs/plugin-quickstart/
+## ✨ Ability to import an unlimited number of icons at once
 
-This plugin template uses Typescript and NPM, two standard tools in creating JavaScript applications.
+You can choose the categories you need in the special filter menu, as well as the style of icons.
 
-First, download Node.js which comes with NPM. This will allow you to install TypeScript and other
-libraries. You can find the download link here:
+## ✨ Advanced search bar
 
-  https://nodejs.org/en/download/
+Unlike most plugins, the Solar plugin allows to select and check all icons which did you choose!
 
-Next, install TypeScript using the command:
+## ✨ Round-the-clock support
 
-  npm install -g typescript
+You can contact us through the main menu and
 
-Finally, in the directory of your plugin, get the latest type definitions for the plugin API by running:
+describe the problem which we will fix as fast as possible.
 
-  npm install --save-dev @figma/plugin-typings
+## ✨ It is simply beautiful :D
 
-If you are familiar with JavaScript, TypeScript will look very familiar. In fact, valid JavaScript code
-is already valid Typescript code.
-
-TypeScript adds type annotations to variables. This allows code editors such as Visual Studio Code
-to provide information about the Figma API while you are writing code, as well as help catch bugs
-you previously didn't notice.
-
-For more information, visit https://www.typescriptlang.org/
-
-Using TypeScript requires a compiler to convert TypeScript (code.ts) into JavaScript (code.js)
-for the browser to run.
-
-We recommend writing TypeScript code using Visual Studio code:
-
-1. Download Visual Studio Code if you haven't already: https://code.visualstudio.com/.
-2. Open this directory in Visual Studio Code.
-3. Compile TypeScript to JavaScript: Run the "Terminal > Run Build Task..." menu item,
-    then select "npm: watch". You will have to do this again every time
-    you reopen Visual Studio Code.
-
-That's it! Visual Studio Code will regenerate the JavaScript file every time you save.
+Well, it`s just pleasing to use this plugin because of the minimalistic design and beautiful animations.<br>
+<br><br>
+**You can find me at:**<br>
+[Telegram](https://t.me/chebarash) • [Instagram](https://instagram.com/chebarash) • [Figma](https://www.figma.com/@chebarash)
