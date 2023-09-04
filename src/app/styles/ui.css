@@ -287,11 +287,16 @@ button.back:focus {
   height: 70px;
 }
 
-.search .magnifer {
+.search .magnifer,
+.search .line {
   position: absolute;
   left: 15;
   pointer-events: none;
   rotate: -45deg;
+}
+
+.search .line {
+  opacity: 0;
 }
 
 .search span:focus-within .magnifer {
@@ -313,25 +318,45 @@ button.back:focus {
   }
 }
 
+.search span:focus-within .line {
+  animation-duration: 300ms;
+  animation-name: li;
+}
+
+@keyframes li {
+  25% {
+    opacity: 0;
+  }
+
+  40% {
+    opacity: 1;
+  }
+
+  60% {
+    opacity: 1;
+  }
+
+  75% {
+    opacity: 0;
+  }
+}
+
 .icon {
   padding: 4px;
   display: flex;
+  cursor: auto;
+}
+
+.container {
+  display: flex;
+  flex: 1;
+  position: relative;
+  cursor: pointer;
 }
 
 .container:hover {
   box-shadow: var(--iconShadow);
   z-index: 99;
-}
-
-.container {
-  border-radius: 12px;
-  border: 1px solid var(--iconBorder);
-  background: var(--iconBg);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  flex: 1;
-  position: relative;
 }
 
 .container *[stroke="#1C274C"] {
@@ -408,18 +433,31 @@ button.back:focus {
   opacity: 1;
 }
 
+.content {
+  border-radius: 12px;
+  border: 1px solid var(--iconBorder);
+  background: var(--iconBg);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex: 1;
+  position: relative;
+  cursor: pointer;
+}
+
 .content svg {
   width: 32px;
   height: 32px;
 }
 
-.container.selected {
+.selected .content {
   background: var(--iconBgActive);
   border: 1px solid var(--iconActiveBorder);
 }
 
 .container > svg {
   scale: 0;
+  z-index: 9;
   position: absolute;
   top: -3px;
   right: -3px;

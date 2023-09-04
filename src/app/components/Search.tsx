@@ -107,6 +107,20 @@ const Search = ({
               }}
             >
               <svg
+                className="line"
+                width="20"
+                height="20"
+                viewBox="0 0 20 20"
+                fill="none"
+              >
+                <path
+                  d="M10 3L10.0007 19.4281"
+                  stroke="var(--fg)"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
+                />
+              </svg>
+              <svg
                 className="magnifer"
                 width="20"
                 height="20"
@@ -116,8 +130,8 @@ const Search = ({
                 <path
                   d="M10.0007 16.1282V19.4281M14.4791 14.0069C12.0058 16.4802 7.99571 16.4802 5.52239 14.0069C3.04907 11.5336 3.04907 7.52356 5.52239 5.05024C7.99571 2.57692 12.0058 2.57692 14.4791 5.05024C16.9524 7.52356 16.9524 11.5336 14.4791 14.0069Z"
                   stroke="var(--fg)"
-                  stroke-width="1.5"
-                  stroke-linecap="round"
+                  strokeWidth="1.5"
+                  strokeLinecap="round"
                 />
               </svg>
               <input
