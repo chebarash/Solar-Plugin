@@ -352,6 +352,7 @@ button.back:focus {
   flex: 1;
   position: relative;
   cursor: pointer;
+  border-radius: 12px;
 }
 
 .container:hover {

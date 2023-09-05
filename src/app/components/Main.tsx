@@ -8,8 +8,16 @@ import Loader from "./Loader";
 import Banner from "./Banner";
 
 const Main = ({ menu }: { menu: () => any }) => {
-  const { loading, selected, search, message, error, len, banner, setBanner } =
-    IconsConsumer();
+  const {
+    loading,
+    selected,
+    search,
+    importIcons,
+    error,
+    len,
+    banner,
+    setBanner,
+  } = IconsConsumer();
 
   const selectedLength = Object.keys(selected).length;
 
@@ -28,7 +36,7 @@ const Main = ({ menu }: { menu: () => any }) => {
             <button className="accent" onClick={menu}>
               VIEW SELECTED
             </button>
-            <button className="medium" onClick={() => message.import(selected)}>
+            <button className="medium" onClick={() => importIcons(selected)}>
               Import {selectedLength} icon
               {selectedLength != 1 && `s`}
             </button>

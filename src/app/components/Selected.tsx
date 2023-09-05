@@ -4,7 +4,7 @@ import Icons from "./Icons";
 import Page from "./Page";
 
 const Selected = ({ close }: { close: () => any }) => {
-  const { selected, setSelected, message } = IconsConsumer();
+  const { selected, setSelected, importIcons } = IconsConsumer();
   const [i, setI] = useState<IconsType>();
 
   const selectedLength = Object.keys(selected).length;
@@ -27,7 +27,7 @@ const Selected = ({ close }: { close: () => any }) => {
       clear={() => setSelected({})}
       footer={
         <div className={`fade${selectedLength ? ` active` : ``}`}>
-          <button className="medium" onClick={() => message.import(selected)}>
+          <button className="medium" onClick={() => importIcons(selected)}>
             IMPORT
           </button>
         </div>

@@ -8,27 +8,6 @@ import React, {
   useCallback,
 } from "react";
 
-class Message {
-  constructor() {}
-  private msg(
-    type: string,
-    value: string | Array<string> | { [name: string]: string }
-  ) {
-    parent.postMessage(
-      {
-        pluginMessage: { type, value },
-      },
-      "*"
-    );
-  }
-  import(selected: { [name: string]: string }) {
-    this.msg(`import`, selected);
-  }
-  error() {
-    this.msg(`error`, []);
-  }
-}
-
 export type IconType = {
   [style: string]: string;
 };
@@ -57,11 +36,12 @@ export type ContextType = {
   toggleSelected: (style: string, category: string, name: string) => () => any;
   banner: boolean;
   setBanner: Dispatch<SetStateAction<boolean>>;
-  message: Message;
   error?: string;
   disclaimer: boolean;
   hideDisclaimer: (dontShow: boolean) => any;
   len: number;
+  importIcons: (selected: { [name: string]: string }) => any;
+  reload: () => any;
 };
 
 const defaults: ContextType = {
@@ -154,16 +134,29 @@ const defaults: ContextType = {
   toggleSelected: () => () => {},
   banner: true,
   setBanner: () => {},
-  message: new Message(),
   disclaimer: false,
   hideDisclaimer: () => {},
   len: 0,
+  importIcons: () => {},
+  reload: () => {},
 };
 
 const IconsContext = createContext<ContextType>(defaults);
 
 const toStr = (text: string) =>
   text.toLocaleLowerCase().replace(/[-_]+/g, "").replace(/ /g, "");
+
+const msg = (
+  type: string,
+  value: string | Array<string> | { [name: string]: string } = ""
+) => {
+  parent.postMessage(
+    {
+      pluginMessage: { type, value },
+    },
+    "*"
+  );
+};
 
 const useIcons = () => {
   const [icons, setIcons] = useState(defaults.icons);
@@ -192,14 +185,15 @@ const useIcons = () => {
 
   const hideDisclaimer = (dontShow: boolean) => {
     setDisclaimer(false);
-    if (dontShow)
-      parent.postMessage(
-        {
-          pluginMessage: { type: `disclaimer`, value: `` },
-        },
-        "*"
-      );
+    if (dontShow) msg(`disclaimer`);
   };
+
+  const importIcons = (selected: { [name: string]: string }) => {
+    setSelected(defaults.selected);
+    msg(`import`, selected);
+  };
+
+  const reload = () => msg(`reload`, []);
 
   useEffect(() => {
     window.onmessage = (event) => {
@@ -240,7 +234,6 @@ const useIcons = () => {
     toggleSelected,
     banner,
     setBanner,
-    message: new Message(),
     error,
     disclaimer,
     hideDisclaimer,
@@ -249,6 +242,8 @@ const useIcons = () => {
           .map(([_n, v]) => Object.keys(v).length)
           .reduce((a, b) => a + b)
       : 0,
+    importIcons,
+    reload,
   };
 };
 

@@ -66,7 +66,7 @@ figma.ui.onmessage = async ({
   value: string | { [name: string]: string };
 }) => {
   switch (type) {
-    case `error`:
+    case `reload`:
       load();
       break;
     case `disclaimer`:
@@ -86,11 +86,14 @@ figma.ui.onmessage = async ({
           .join(`&icons=`)}`
       );
       const nodes = [];
+
+      const { x, y } = figma.currentPage.selection[0] || figma.viewport.center;
       Object.entries(value).forEach(([name, iconSvg], i) => {
         const icon = figma.createComponent();
         icon.resizeWithoutConstraints(24, 24);
         icon.constrainProportions = true;
-        icon.x = i * 30;
+        icon.x = x + i * 30;
+        icon.y = y;
         icon.name = name;
         const node = figma.createNodeFromSvg(iconSvg);
         node.children.forEach((child) => icon.appendChild(child));
@@ -101,7 +104,6 @@ figma.ui.onmessage = async ({
       figma.currentPage.selection = nodes;
       figma.viewport.scrollAndZoomIntoView(nodes);
       figma.notify(toasts[Math.floor(Math.random() * toasts.length)]);
-      figma.closePlugin();
       break;
   }
 };

@@ -613,7 +613,7 @@ const reqErr = (
 );
 
 const Err = ({ button = true }: { button?: boolean }) => {
-  const { setSearch, message, error, loading } = IconsConsumer();
+  const { setSearch, reload, error, loading } = IconsConsumer();
 
   return (
     <div className="searchErr">
@@ -626,7 +626,7 @@ const Err = ({ button = true }: { button?: boolean }) => {
           className="accent"
           onClick={() => {
             setSearch(``);
-            if (error) message.error();
+            if (error) reload();
           }}
           style={{ width: `max-content`, padding: `14px 30px` }}
         >
