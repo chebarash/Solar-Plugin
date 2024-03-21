@@ -18,7 +18,7 @@ const toasts = [
   `🤘 You rock!`,
   `💖 You\`re breathtaking!`,
 ];
-const baseUrl = `https://solariconset.com/`;
+const baseUrl = `https://solar.lumin.team/`;
 let disclaimer: boolean = true;
 
 const load = async () => {
@@ -95,7 +95,9 @@ figma.ui.onmessage = async ({
         icon.x = x + i * 30;
         icon.y = y;
         icon.name = name;
-        const node = figma.createNodeFromSvg(iconSvg);
+        const node = figma.createNodeFromSvg(
+          `<svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">${iconSvg}</svg>`
+        );
         node.children.forEach((child) => icon.appendChild(child));
         node.remove();
         figma.currentPage.appendChild(icon);

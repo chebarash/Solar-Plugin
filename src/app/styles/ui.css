@@ -15,7 +15,7 @@
   --settingsBorder: #ececec;
   --settingsActive: #ffffff;
 
-  --icon: #1c274ccc;
+  --icon: #495270;
   --iconActive: #1c274c;
   --iconBg: var(--mainBg);
   --iconBorder: #f3f3f3;
@@ -97,7 +97,7 @@
   --settingsBorder: #484848;
   --settingsActive: #2c2c2c;
 
-  --icon: #ffffff80;
+  --icon: #959595;
   --iconActive: #ffffff;
   --iconBg: var(--mainBg);
   --iconBorder: #444444;

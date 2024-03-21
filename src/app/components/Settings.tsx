@@ -44,14 +44,20 @@ const Settings = ({ catSearch }: { catSearch: string }) => {
                 )
               }
             >
-              <div
-                style={{ width: 20, height: 20 }}
-                dangerouslySetInnerHTML={{
-                  __html: Object.values(icons[name])[0][
-                    active ? `Bold` : `Linear`
-                  ],
-                }}
-              ></div>
+              <div style={{ width: 20, height: 20 }}>
+                <svg
+                  width="24"
+                  height="24"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  xmlns="http://www.w3.org/2000/svg"
+                  dangerouslySetInnerHTML={{
+                    __html: Object.values(icons[name])[0][
+                      active ? `Bold` : `Linear`
+                    ],
+                  }}
+                ></svg>
+              </div>
               <p>{name}</p>
               <div className="hint"></div>
               <p className="len">{Object.values(icons[name]).length}</p>

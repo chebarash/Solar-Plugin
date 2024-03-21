@@ -9,7 +9,7 @@
   "ui": "dist/ui.html",
   "networkAccess": {
     "allowedDomains": [
-      "https://solariconset.com/",
+      "https://solar.lumin.team/",
       "https://fonts.googleapis.com",
       "https://fonts.gstatic.com"
     ]
