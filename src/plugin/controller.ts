@@ -18,7 +18,7 @@ const toasts = [
   `🤘 You rock!`,
   `💖 You\`re breathtaking!`,
 ];
-const baseUrl = `https://solar.lumin.team/`;
+const baseUrl = `https://solar.480design.cc/`;
 let disclaimer: boolean = true;
 
 const load = async () => {
